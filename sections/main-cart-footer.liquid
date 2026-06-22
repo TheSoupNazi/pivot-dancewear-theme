@@ -72,7 +72,7 @@
                       el.innerHTML = '<div style="background:rgba(62,214,96,0.15);border-radius:8px;padding:10px 14px;"><p style="font-size:13px;margin:0;color:#1a6b2e;font-weight:500;">🎉 You have unlocked free shipping!</p></div>';
                     } else {
                       var pct = Math.min(100, Math.round((total/FREE)*100));
-                      el.innerHTML = '<div style="background:#f4f4f2;border-radius:8px;padding:10px 14px;"><p style="font-size:13px;margin:0 0 7px;color:#000;">Add <strong>' + fmt(FREE-total) + '</strong> more for free shipping!</p><div style="background:#ddd;border-radius:99px;height:12px;width:100%;overflow:hidden;"><div style="background:#3ED660;height:12px;width:'+pct+'%;border-radius:99px;transition:width 0.4s ease;"></div></div></div>';
+                      el.innerHTML = '<div style="background:#f4f4f2;border-radius:8px;padding:10px 14px;"><p style="font-size:13px;margin:0 0 7px;color:#000;">Add <strong>' + fmt(FREE-total) + '</strong> more for free shipping!</p><div style="background:#ddd;border-radius:99px;height:12px;width:100%;overflow:hidden;display:block;"><div style="background:#3ED660;height:12px;width:'+pct+'%;border-radius:99px;transition:width 0.4s ease;display:block;"></div></div></div>';
                     }
                   }
                   function update() { fetch('/cart.js').then(function(r){return r.json();}).then(render); }
