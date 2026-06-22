@@ -48,16 +48,10 @@
         "padding_top": 0,
         "padding_bottom": 0
       }
-    },
-    "cart_progress_bar_BgjfCU": {
-      "type": "cart-progress-bar",
-      "name": "Cart Shipping Bar",
-      "settings": {}
     }
   },
   "order": [
     "cart-items",
-    "cart_progress_bar_BgjfCU",
     "cart-footer",
     "custom_liquid_GPx4q7"
   ]
