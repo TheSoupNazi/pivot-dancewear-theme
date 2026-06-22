@@ -58,29 +58,28 @@
                   {%- endif -%}
                 </div>
 
-                {%- if cart.item_count > 0 -%}
-                  <div id="pivot-cart-bar" style="margin-bottom:12px;"></div>
-                  <script>
-                  (function() {
-                    var FREE = 7500;
-                    function fmt(c) { return "$" + (c/100).toFixed(2); }
-                    function render(cart) {
-                      var el = document.getElementById('pivot-cart-bar');
-                      if (!el) return;
-                      var total = cart.total_price;
-                      if (total >= FREE) {
-                        el.innerHTML = '<div style="background:rgba(62,214,96,0.15);border-radius:8px;padding:10px 14px;"><p style="font-size:13px;margin:0;color:#1a6b2e;font-weight:500;">🎉 You have unlocked free shipping!</p></div>';
-                      } else {
-                        var pct = Math.min(100, Math.round((total/FREE)*100));
-                        el.innerHTML = '<div style="background:#f4f4f2;border-radius:8px;padding:10px 14px;"><p style="font-size:13px;margin:0 0 7px;color:#000;">Add <strong>' + fmt(FREE-total) + '</strong> more for free shipping!</p><div style="background:#ddd;border-radius:99px;height:12px;width:100%;overflow:hidden;"><div style="background:#3ED660;height:12px;width:'+pct+'%;border-radius:99px;transition:width 0.4s ease;"></div></div></div>';
-                      }
+                <div id="pivot-cart-bar" style="margin-bottom:12px;"></div>
+                <script>
+                (function() {
+                  var FREE = 7500;
+                  function fmt(c) { return "$" + (c/100).toFixed(2); }
+                  function render(cart) {
+                    var el = document.getElementById('pivot-cart-bar');
+                    if (!el) return;
+                    if (cart.item_count === 0) { el.innerHTML = ''; return; }
+                    var total = cart.total_price;
+                    if (total >= FREE) {
+                      el.innerHTML = '<div style="background:rgba(62,214,96,0.15);border-radius:8px;padding:10px 14px;"><p style="font-size:13px;margin:0;color:#1a6b2e;font-weight:500;">🎉 You have unlocked free shipping!</p></div>';
+                    } else {
+                      var pct = Math.min(100, Math.round((total/FREE)*100));
+                      el.innerHTML = '<div style="background:#f4f4f2;border-radius:8px;padding:10px 14px;"><p style="font-size:13px;margin:0 0 7px;color:#000;">Add <strong>' + fmt(FREE-total) + '</strong> more for free shipping!</p><div style="background:#ddd;border-radius:99px;height:12px;width:100%;overflow:hidden;"><div style="background:#3ED660;height:12px;width:'+pct+'%;border-radius:99px;transition:width 0.4s ease;"></div></div></div>';
                     }
-                    function update() { fetch('/cart.js').then(function(r){return r.json();}).then(render); }
-                    document.addEventListener('DOMContentLoaded', update);
-                    setInterval(update, 2000);
-                  })();
-                  </script>
-                {%- endif -%}
+                  }
+                  function update() { fetch('/cart.js').then(function(r){return r.json();}).then(render); }
+                  document.addEventListener('DOMContentLoaded', update);
+                  setInterval(update, 2000);
+                })();
+                </script>
 
                 <div class="totals">
                   <h2 class="totals__total">{{ 'sections.cart.estimated_total' | t }}</h2>
