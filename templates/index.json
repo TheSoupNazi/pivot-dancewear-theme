@@ -103,7 +103,8 @@
         "slide_pink": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/pivotdancewear-293_cropped.jpg",
+            "image_asset": "pivotdancewear-293-wide.jpg",
+            "image_alt": "Pivot Dancewear pink basic shorts collection",
             "image_focal": "center",
             "slide_text_color": "light",
             "text_alignment": "center",
