@@ -65,9 +65,9 @@ variant-selects {
   color: rgb(var(--color-foreground));
   display: inline-block;
   margin: 0.7rem 0.5rem 0.2rem 0;
-  padding: 1rem 2rem;
-  font-size: 1.4rem;
-  letter-spacing: 0.1rem;
+  padding: 0.8rem 1.2rem;
+  font-size: 1.3rem;
+  letter-spacing: 0.05rem;
   line-height: 1;
   text-align: center;
   transition: border var(--duration-short) ease;
