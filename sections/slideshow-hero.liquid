@@ -121,6 +121,13 @@
             assign obj = 'center center'
         endcase
         assign tone = block.settings.slide_text_color | default: 'light'
+        if forloop.first
+          assign img_loading = 'eager'
+          assign img_fetchpriority = 'high'
+        else
+          assign img_loading = 'lazy'
+          assign img_fetchpriority = 'auto'
+        endif
       -%}
       <div class="shero__slide{% if forloop.first %} is-active{% endif %} shero--{{ tone }}"
            {{ block.shopify_attributes }}
@@ -132,12 +139,12 @@
             {{ block.settings.image
               | image_url: width: 3000
               | image_tag:
-                  loading: forloop.first | default: false,
+                  loading: img_loading,
                   widths: '750, 1100, 1500, 2000, 2600, 3000',
                   sizes: '100vw',
                   alt: block.settings.image.alt | default: 'Pivot Dancewear',
                   style: obj | prepend: 'object-position:' | append: ';',
-                  fetchpriority: forloop.first
+                  fetchpriority: img_fetchpriority
             }}
           {%- elsif block.settings.image_asset != blank -%}
             <img src="{{ block.settings.image_asset | asset_url }}"
