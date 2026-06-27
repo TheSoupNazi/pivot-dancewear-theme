@@ -9,6 +9,62 @@
  */
 {
   "sections": {
+    "slideshow_hero": {
+      "type": "slideshow-hero",
+      "blocks": {
+        "slide_summer": {
+          "type": "slide",
+          "settings": {
+            "image_asset": "hero-summer-rwb.jpg",
+            "image_alt": "Pivot Dancewear new red, white and blue summer sets",
+            "image_focal": "top",
+            "slide_text_color": "light",
+            "text_alignment": "center",
+            "heading": "Bring on Summer!",
+            "heading_size": "h1",
+            "heading_position": "top",
+            "text_line_1": "Check out our new Red, White and Blue sets!",
+            "text_line_2": "(Bonus!!! See if you can find our other new fun summer colored set!)",
+            "button_label": "Shop New Colors",
+            "button_link": "shopify://collections/all"
+          }
+        },
+        "slide_pink": {
+          "type": "slide",
+          "settings": {
+            "image_asset": "pivotdancewear-293-wide.jpg",
+            "image_alt": "Pivot Dancewear pink basic shorts collection",
+            "image_focal": "center",
+            "slide_text_color": "light",
+            "text_alignment": "center",
+            "heading": "Browse our latest products",
+            "heading_size": "h1",
+            "heading_position": "bottom",
+            "text_line_1": "",
+            "text_line_2": "",
+            "button_label": "Shop all",
+            "button_link": "shopify://collections/all"
+          }
+        }
+      },
+      "block_order": [
+        "slide_summer",
+        "slide_pink"
+      ],
+      "settings": {
+        "image_height": "large",
+        "image_overlay_opacity": 20,
+        "show_top_scrim": true,
+        "show_bottom_scrim": true,
+        "autoplay": true,
+        "autoplay_speed": 6,
+        "show_arrows": true,
+        "show_dots": true,
+        "color_scheme": "scheme-3",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
     "rich_text_cHKWnT": {
       "type": "rich-text",
       "blocks": {
@@ -77,60 +133,6 @@
       "settings": {
         "custom_liquid": "<div id=\"pivot-popup-overlay\" style=\"display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9998;\"></div>\n<div id=\"pivot-popup\" style=\"display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;z-index:9999;max-width:420px;width:90%;padding:40px 32px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,0.2);font-family:inherit;\">\n  <button id=\"pivot-popup-close\" style=\"position:absolute;top:12px;right:16px;background:none;border:none;font-size:22px;cursor:pointer;line-height:1;color:#000;\">&times;</button>\n  {% form 'customer' %}\n    {% if form.posted_successfully? %}\n      <h2 style=\"margin:0 0 12px;font-size:26px;font-weight:600;\">You are in!</h2>\n      <p style=\"margin:0 0 16px;font-size:15px;color:#555;\">Here is your 15% off code, just for you:</p>\n      <div style=\"border:2px dashed #000;padding:12px;font-size:20px;font-weight:700;letter-spacing:1px;margin-bottom:16px;\">WELCOME15</div>\n      <p style=\"margin:0;font-size:13px;color:#777;\">Enter this code at checkout to save.</p>\n    {% else %}\n      <h2 style=\"margin:0 0 12px;font-size:26px;font-weight:600;\">Get 15% off your first order</h2>\n      <p style=\"margin:0 0 20px;font-size:15px;color:#555;\">Join the Pivot Dancewear family and we will reveal your exclusive code.</p>\n      <input type=\"hidden\" name=\"contact[tags]\" value=\"newsletter\">\n      <div style=\"display:flex;gap:8px;\">\n        <input type=\"email\" name=\"contact[email]\" placeholder=\"Email\" required style=\"flex:1;padding:12px;border:1px solid #ccc;font-size:15px;\">\n        <button type=\"submit\" style=\"background:#000;color:#fff;border:none;padding:12px 20px;font-size:15px;cursor:pointer;white-space:nowrap;\">Subscribe</button>\n      </div>\n    {% endif %}\n  {% endform %}\n</div>\n<script>\n(function() {\n  var overlay = document.getElementById('pivot-popup-overlay');\n  var popup = document.getElementById('pivot-popup');\n  var justSubmitted = document.querySelector('#pivot-popup div[style*=\"dashed\"]') !== null;\n  function showPopup() {\n    overlay.style.display = 'block';\n    popup.style.display = 'block';\n    localStorage.setItem('pivotPopupShown', 'true');\n  }\n  function hidePopup() {\n    overlay.style.display = 'none';\n    popup.style.display = 'none';\n  }\n  if (justSubmitted) {\n    showPopup();\n  } else if (!localStorage.getItem('pivotPopupShown')) {\n    setTimeout(showPopup, 5000);\n  }\n  document.getElementById('pivot-popup-close').addEventListener('click', hidePopup);\n  overlay.addEventListener('click', hidePopup);\n})();\n</script>",
         "color_scheme": "",
-        "padding_top": 0,
-        "padding_bottom": 0
-      }
-    },
-    "slideshow_hero": {
-      "type": "slideshow-hero",
-      "blocks": {
-        "slide_summer": {
-          "type": "slide",
-          "settings": {
-            "image_asset": "hero-summer-rwb.jpg",
-            "image_alt": "Pivot Dancewear new red, white and blue summer sets",
-            "image_focal": "top",
-            "slide_text_color": "light",
-            "text_alignment": "center",
-            "heading": "Bring on Summer!",
-            "heading_size": "h0",
-            "text_line_1": "Check out our new Red, White and Blue sets!",
-            "text_line_2": "(Bonus!!! See if you can find our other new fun summer colored set!)",
-            "button_label": "Shop New Colors",
-            "button_link": "shopify://collections/all"
-          }
-        },
-        "slide_pink": {
-          "type": "slide",
-          "settings": {
-            "image_asset": "pivotdancewear-293-wide.jpg",
-            "image_alt": "Pivot Dancewear pink basic shorts collection",
-            "image_focal": "center",
-            "slide_text_color": "light",
-            "text_alignment": "center",
-            "heading": "Browse our latest products",
-            "heading_size": "h0",
-            "text_line_1": "",
-            "text_line_2": "",
-            "button_label": "Shop all",
-            "button_link": "shopify://collections/all"
-          }
-        }
-      },
-      "block_order": [
-        "slide_summer",
-        "slide_pink"
-      ],
-      "settings": {
-        "image_height": "large",
-        "image_overlay_opacity": 20,
-        "show_top_scrim": true,
-        "show_bottom_scrim": true,
-        "autoplay": true,
-        "autoplay_speed": 6,
-        "show_arrows": true,
-        "show_dots": true,
-        "color_scheme": "scheme-3",
         "padding_top": 0,
         "padding_bottom": 0
       }
