@@ -1,1 +1,145 @@
-{"sections":{"rich_text_cHKWnT":{"type":"rich-text","blocks":{"text_de6hW3":{"type":"text","name":"Hero Message","settings":{"text":"<p><strong>Pivot Dancewear<\/strong> was created with one clear purpose: <strong>to bring high-quality, studio-ready dancewear to young dancers—without the premium price tag.<\/strong><\/p>"}}},"block_order":["text_de6hW3"],"name":"Hero Text Section","settings":{"desktop_content_position":"center","content_alignment":"center","color_scheme":"scheme-2","full_width":true,"padding_top":12,"padding_bottom":12}},"image_banner":{"type":"image-banner","blocks":{"heading":{"type":"heading","name":"Hero Image Text","settings":{"heading":"Browse our latest products","heading_size":"h0"}},"button":{"type":"buttons","settings":{"button_label_1":"Shop all","button_link_1":"shopify:\/\/collections\/all","button_style_secondary_1":true,"button_label_2":"","button_link_2":"","button_style_secondary_2":false}}},"block_order":["heading","button"],"name":"Hero Image","settings":{"image":"shopify:\/\/shop_images\/pivotdancewear-293_cropped.jpg","image_overlay_opacity":30,"image_height":"large","image_behavior":"none","desktop_content_position":"bottom-center","desktop_content_alignment":"center","show_text_box":false,"color_scheme":"scheme-3","stack_images_on_mobile":false,"mobile_content_alignment":"center","show_text_below":false}},"featured_collection":{"type":"featured-collection","settings":{"collection":"all","products_to_show":4,"title":"Featured products","heading_size":"h2","description":"","show_description":false,"description_style":"body","columns_desktop":4,"enable_desktop_slider":false,"full_width":false,"show_view_all":true,"view_all_style":"solid","color_scheme":"scheme-1","image_ratio":"adapt","image_shape":"default","show_secondary_image":true,"show_vendor":false,"show_rating":false,"quick_add":"none","columns_mobile":"2","swipe_on_mobile":false,"padding_top":44,"padding_bottom":36}},"custom_liquid_bEMKFW":{"type":"custom-liquid","name":"First Order 15% Section","settings":{"custom_liquid":"<div id=\"pivot-inline-signup\" style=\"max-width:480px;margin:0 auto;padding:48px 32px;text-align:center;\">\n  <div id=\"pivot-inline-form-state\">\n    <h2 style=\"margin:0 0 12px;font-size:28px;font-weight:600;\">Get 15% off your first order<\/h2>\n    <p style=\"margin:0 0 20px;font-size:15px;color:#555;\">Join the Pivot Dancewear family and we will reveal your exclusive code.<\/p>\n    <div style=\"display:flex;gap:8px;max-width:380px;margin:0 auto;\">\n      <input type=\"email\" id=\"pivot-inline-email\" placeholder=\"Email\" required style=\"flex:1;padding:12px;border:1px solid #ccc;font-size:15px;\">\n      <button type=\"button\" id=\"pivot-inline-submit\" style=\"background:#000;color:#fff;border:none;padding:12px 20px;font-size:15px;cursor:pointer;white-space:nowrap;\">Subscribe<\/button>\n    <\/div>\n    <p id=\"pivot-inline-error\" style=\"display:none;margin:10px 0 0;font-size:13px;color:#c00;\">Please enter a valid email.<\/p>\n  <\/div>\n<\/div>\n<script>\n(function() {\n  var btn = document.getElementById(\"pivot-inline-submit\");\n  var emailInput = document.getElementById(\"pivot-inline-email\");\n  var stateDiv = document.getElementById(\"pivot-inline-form-state\");\n  var errorMsg = document.getElementById(\"pivot-inline-error\");\n  btn.addEventListener(\"click\", function() {\n    var email = emailInput.value.trim();\n    if (!email || email.indexOf(\"@\") === -1) {\n      errorMsg.style.display = \"block\";\n      return;\n    }\n    errorMsg.style.display = \"none\";\n    btn.disabled = true;\n    btn.textContent = \"Submitting...\";\n    var formData = new FormData();\n    formData.append(\"form_type\", \"customer\");\n    formData.append(\"utf8\", \"ok\");\n    formData.append(\"contact[email]\", email);\n    formData.append(\"contact[tags]\", \"newsletter\");\n    fetch(\"\/contact\", {\n      method: \"POST\",\n      body: formData\n    }).then(function() {\n      var html = \"\";\n      html += \"<h2 style=\" + JSON.stringify(\"margin:0 0 12px;font-size:28px;font-weight:600;\") + \">You are in!<\/h2>\";\n      html += \"<p style=\" + JSON.stringify(\"margin:0 0 16px;font-size:15px;color:#555;\") + \">Here is your 15% off code, just for you:<\/p>\";\n      html += \"<div style=\" + JSON.stringify(\"border:2px dashed #000;padding:12px;font-size:20px;font-weight:700;letter-spacing:1px;margin:0 auto 16px;max-width:240px;\") + \">WELCOME15<\/div>\";\n      html += \"<p style=\" + JSON.stringify(\"margin:0;font-size:13px;color:#777;\") + \">Enter this code at checkout to save.<\/p>\";\n      stateDiv.innerHTML = html;\n      try { localStorage.setItem(\"pivotPopupShown\", \"true\"); } catch (e) {}\n    }).catch(function() {\n      btn.disabled = false;\n      btn.textContent = \"Subscribe\";\n      errorMsg.textContent = \"Something went wrong. Please try again.\";\n      errorMsg.style.display = \"block\";\n    });\n  });\n})();\n<\/script>","color_scheme":"","padding_top":32,"padding_bottom":36}},"custom_liquid_HTKaBx":{"type":"custom-liquid","name":"First Order Pop-Up","settings":{"custom_liquid":"<div id=\"pivot-popup-overlay\" style=\"display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9998;\"><\/div>\n<div id=\"pivot-popup\" style=\"display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;z-index:9999;max-width:420px;width:90%;padding:40px 32px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,0.2);font-family:inherit;\">\n  <button id=\"pivot-popup-close\" style=\"position:absolute;top:12px;right:16px;background:none;border:none;font-size:22px;cursor:pointer;line-height:1;color:#000;\">&times;<\/button>\n  {% form 'customer' %}\n    {% if form.posted_successfully? %}\n      <h2 style=\"margin:0 0 12px;font-size:26px;font-weight:600;\">You are in!<\/h2>\n      <p style=\"margin:0 0 16px;font-size:15px;color:#555;\">Here is your 15% off code, just for you:<\/p>\n      <div style=\"border:2px dashed #000;padding:12px;font-size:20px;font-weight:700;letter-spacing:1px;margin-bottom:16px;\">WELCOME15<\/div>\n      <p style=\"margin:0;font-size:13px;color:#777;\">Enter this code at checkout to save.<\/p>\n    {% else %}\n      <h2 style=\"margin:0 0 12px;font-size:26px;font-weight:600;\">Get 15% off your first order<\/h2>\n      <p style=\"margin:0 0 20px;font-size:15px;color:#555;\">Join the Pivot Dancewear family and we will reveal your exclusive code.<\/p>\n      <input type=\"hidden\" name=\"contact[tags]\" value=\"newsletter\">\n      <div style=\"display:flex;gap:8px;\">\n        <input type=\"email\" name=\"contact[email]\" placeholder=\"Email\" required style=\"flex:1;padding:12px;border:1px solid #ccc;font-size:15px;\">\n        <button type=\"submit\" style=\"background:#000;color:#fff;border:none;padding:12px 20px;font-size:15px;cursor:pointer;white-space:nowrap;\">Subscribe<\/button>\n      <\/div>\n    {% endif %}\n  {% endform %}\n<\/div>\n<script>\n(function() {\n  var overlay = document.getElementById('pivot-popup-overlay');\n  var popup = document.getElementById('pivot-popup');\n  var justSubmitted = document.querySelector('#pivot-popup div[style*=\"dashed\"]') !== null;\n  function showPopup() {\n    overlay.style.display = 'block';\n    popup.style.display = 'block';\n    localStorage.setItem('pivotPopupShown', 'true');\n  }\n  function hidePopup() {\n    overlay.style.display = 'none';\n    popup.style.display = 'none';\n  }\n  if (justSubmitted) {\n    showPopup();\n  } else if (!localStorage.getItem('pivotPopupShown')) {\n    setTimeout(showPopup, 5000);\n  }\n  document.getElementById('pivot-popup-close').addEventListener('click', hidePopup);\n  overlay.addEventListener('click', hidePopup);\n})();\n<\/script>","color_scheme":"","padding_top":0,"padding_bottom":0}}},"order":["rich_text_cHKWnT","image_banner","featured_collection","custom_liquid_bEMKFW","custom_liquid_HTKaBx"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "rich_text_cHKWnT": {
+      "type": "rich-text",
+      "blocks": {
+        "text_de6hW3": {
+          "type": "text",
+          "name": "Hero Message",
+          "settings": {
+            "text": "<p><strong>Pivot Dancewear</strong> was created with one clear purpose: <strong>to bring high-quality, studio-ready dancewear to young dancers\u2014without the premium price tag.</strong></p>"
+          }
+        }
+      },
+      "block_order": [
+        "text_de6hW3"
+      ],
+      "name": "Hero Text Section",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "scheme-2",
+        "full_width": true,
+        "padding_top": 12,
+        "padding_bottom": 12
+      }
+    },
+    "featured_collection": {
+      "type": "featured-collection",
+      "settings": {
+        "collection": "all",
+        "products_to_show": 4,
+        "title": "Featured products",
+        "heading_size": "h2",
+        "description": "",
+        "show_description": false,
+        "description_style": "body",
+        "columns_desktop": 4,
+        "enable_desktop_slider": false,
+        "full_width": false,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "color_scheme": "scheme-1",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "none",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 44,
+        "padding_bottom": 36
+      }
+    },
+    "custom_liquid_bEMKFW": {
+      "type": "custom-liquid",
+      "name": "First Order 15% Section",
+      "settings": {
+        "custom_liquid": "<div id=\"pivot-inline-signup\" style=\"max-width:480px;margin:0 auto;padding:48px 32px;text-align:center;\">\n  <div id=\"pivot-inline-form-state\">\n    <h2 style=\"margin:0 0 12px;font-size:28px;font-weight:600;\">Get 15% off your first order</h2>\n    <p style=\"margin:0 0 20px;font-size:15px;color:#555;\">Join the Pivot Dancewear family and we will reveal your exclusive code.</p>\n    <div style=\"display:flex;gap:8px;max-width:380px;margin:0 auto;\">\n      <input type=\"email\" id=\"pivot-inline-email\" placeholder=\"Email\" required style=\"flex:1;padding:12px;border:1px solid #ccc;font-size:15px;\">\n      <button type=\"button\" id=\"pivot-inline-submit\" style=\"background:#000;color:#fff;border:none;padding:12px 20px;font-size:15px;cursor:pointer;white-space:nowrap;\">Subscribe</button>\n    </div>\n    <p id=\"pivot-inline-error\" style=\"display:none;margin:10px 0 0;font-size:13px;color:#c00;\">Please enter a valid email.</p>\n  </div>\n</div>\n<script>\n(function() {\n  var btn = document.getElementById(\"pivot-inline-submit\");\n  var emailInput = document.getElementById(\"pivot-inline-email\");\n  var stateDiv = document.getElementById(\"pivot-inline-form-state\");\n  var errorMsg = document.getElementById(\"pivot-inline-error\");\n  btn.addEventListener(\"click\", function() {\n    var email = emailInput.value.trim();\n    if (!email || email.indexOf(\"@\") === -1) {\n      errorMsg.style.display = \"block\";\n      return;\n    }\n    errorMsg.style.display = \"none\";\n    btn.disabled = true;\n    btn.textContent = \"Submitting...\";\n    var formData = new FormData();\n    formData.append(\"form_type\", \"customer\");\n    formData.append(\"utf8\", \"ok\");\n    formData.append(\"contact[email]\", email);\n    formData.append(\"contact[tags]\", \"newsletter\");\n    fetch(\"/contact\", {\n      method: \"POST\",\n      body: formData\n    }).then(function() {\n      var html = \"\";\n      html += \"<h2 style=\" + JSON.stringify(\"margin:0 0 12px;font-size:28px;font-weight:600;\") + \">You are in!</h2>\";\n      html += \"<p style=\" + JSON.stringify(\"margin:0 0 16px;font-size:15px;color:#555;\") + \">Here is your 15% off code, just for you:</p>\";\n      html += \"<div style=\" + JSON.stringify(\"border:2px dashed #000;padding:12px;font-size:20px;font-weight:700;letter-spacing:1px;margin:0 auto 16px;max-width:240px;\") + \">WELCOME15</div>\";\n      html += \"<p style=\" + JSON.stringify(\"margin:0;font-size:13px;color:#777;\") + \">Enter this code at checkout to save.</p>\";\n      stateDiv.innerHTML = html;\n      try { localStorage.setItem(\"pivotPopupShown\", \"true\"); } catch (e) {}\n    }).catch(function() {\n      btn.disabled = false;\n      btn.textContent = \"Subscribe\";\n      errorMsg.textContent = \"Something went wrong. Please try again.\";\n      errorMsg.style.display = \"block\";\n    });\n  });\n})();\n</script>",
+        "color_scheme": "",
+        "padding_top": 32,
+        "padding_bottom": 36
+      }
+    },
+    "custom_liquid_HTKaBx": {
+      "type": "custom-liquid",
+      "name": "First Order Pop-Up",
+      "settings": {
+        "custom_liquid": "<div id=\"pivot-popup-overlay\" style=\"display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9998;\"></div>\n<div id=\"pivot-popup\" style=\"display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;z-index:9999;max-width:420px;width:90%;padding:40px 32px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,0.2);font-family:inherit;\">\n  <button id=\"pivot-popup-close\" style=\"position:absolute;top:12px;right:16px;background:none;border:none;font-size:22px;cursor:pointer;line-height:1;color:#000;\">&times;</button>\n  {% form 'customer' %}\n    {% if form.posted_successfully? %}\n      <h2 style=\"margin:0 0 12px;font-size:26px;font-weight:600;\">You are in!</h2>\n      <p style=\"margin:0 0 16px;font-size:15px;color:#555;\">Here is your 15% off code, just for you:</p>\n      <div style=\"border:2px dashed #000;padding:12px;font-size:20px;font-weight:700;letter-spacing:1px;margin-bottom:16px;\">WELCOME15</div>\n      <p style=\"margin:0;font-size:13px;color:#777;\">Enter this code at checkout to save.</p>\n    {% else %}\n      <h2 style=\"margin:0 0 12px;font-size:26px;font-weight:600;\">Get 15% off your first order</h2>\n      <p style=\"margin:0 0 20px;font-size:15px;color:#555;\">Join the Pivot Dancewear family and we will reveal your exclusive code.</p>\n      <input type=\"hidden\" name=\"contact[tags]\" value=\"newsletter\">\n      <div style=\"display:flex;gap:8px;\">\n        <input type=\"email\" name=\"contact[email]\" placeholder=\"Email\" required style=\"flex:1;padding:12px;border:1px solid #ccc;font-size:15px;\">\n        <button type=\"submit\" style=\"background:#000;color:#fff;border:none;padding:12px 20px;font-size:15px;cursor:pointer;white-space:nowrap;\">Subscribe</button>\n      </div>\n    {% endif %}\n  {% endform %}\n</div>\n<script>\n(function() {\n  var overlay = document.getElementById('pivot-popup-overlay');\n  var popup = document.getElementById('pivot-popup');\n  var justSubmitted = document.querySelector('#pivot-popup div[style*=\"dashed\"]') !== null;\n  function showPopup() {\n    overlay.style.display = 'block';\n    popup.style.display = 'block';\n    localStorage.setItem('pivotPopupShown', 'true');\n  }\n  function hidePopup() {\n    overlay.style.display = 'none';\n    popup.style.display = 'none';\n  }\n  if (justSubmitted) {\n    showPopup();\n  } else if (!localStorage.getItem('pivotPopupShown')) {\n    setTimeout(showPopup, 5000);\n  }\n  document.getElementById('pivot-popup-close').addEventListener('click', hidePopup);\n  overlay.addEventListener('click', hidePopup);\n})();\n</script>",
+        "color_scheme": "",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "slideshow_hero": {
+      "type": "slideshow-hero",
+      "blocks": {
+        "slide_summer": {
+          "type": "slide",
+          "settings": {
+            "image_asset": "hero-summer-rwb.jpg",
+            "image_alt": "Pivot Dancewear new red, white and blue summer sets",
+            "image_focal": "top",
+            "slide_text_color": "light",
+            "text_alignment": "center",
+            "heading": "Bring on Summer!",
+            "heading_size": "h0",
+            "text_line_1": "Check out our new Red, White and Blue sets!",
+            "text_line_2": "(Bonus!!! See if you can find our other new fun summer colored set!)",
+            "button_label": "Shop New Colors",
+            "button_link": "shopify://collections/all"
+          }
+        },
+        "slide_pink": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/pivotdancewear-293_cropped.jpg",
+            "image_focal": "center",
+            "slide_text_color": "light",
+            "text_alignment": "center",
+            "heading": "",
+            "heading_size": "h0",
+            "text_line_1": "",
+            "text_line_2": "",
+            "button_label": "",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "slide_summer",
+        "slide_pink"
+      ],
+      "settings": {
+        "image_height": "large",
+        "image_overlay_opacity": 20,
+        "show_top_scrim": true,
+        "show_bottom_scrim": true,
+        "autoplay": true,
+        "autoplay_speed": 6,
+        "show_arrows": true,
+        "show_dots": true,
+        "color_scheme": "scheme-3",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    }
+  },
+  "order": [
+    "rich_text_cHKWnT",
+    "slideshow_hero",
+    "featured_collection",
+    "custom_liquid_bEMKFW",
+    "custom_liquid_HTKaBx"
+  ]
+}

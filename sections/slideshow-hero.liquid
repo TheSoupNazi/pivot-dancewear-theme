@@ -1,0 +1,307 @@
+{%- comment -%}
+  Slideshow Hero — Pivot Dancewear
+  Custom hero slideshow with split text zones: heading anchored TOP,
+  body copy + button anchored BOTTOM (per slide). Replaces Image Banner.
+{%- endcomment -%}
+
+{%- liquid
+  assign sec = section.id
+-%}
+
+<style>
+  #ShopHero-{{ sec }}{
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  #ShopHero-{{ sec }} .shero__track{ position: relative; width: 100%; overflow: hidden; }
+  #ShopHero-{{ sec }} .shero__slide{
+    position: absolute; inset: 0; opacity: 0; visibility: hidden;
+    transition: opacity .6s ease; display: block;
+  }
+  #ShopHero-{{ sec }} .shero__slide.is-active{ position: relative; opacity: 1; visibility: visible; }
+  {%- case section.settings.image_height -%}
+    {%- when 'small' -%}#ShopHero-{{ sec }} .shero__media{ aspect-ratio: 2 / 1; }
+    {%- when 'medium' -%}#ShopHero-{{ sec }} .shero__media{ aspect-ratio: 16 / 9; }
+    {%- else -%}#ShopHero-{{ sec }} .shero__media{ aspect-ratio: 3 / 2; }
+  {%- endcase -%}
+  #ShopHero-{{ sec }} .shero__media{ position: relative; width: 100%; overflow: hidden; }
+  #ShopHero-{{ sec }} .shero__media img{ width: 100%; height: 100%; object-fit: cover; display: block; }
+  /* base + top/bottom scrims for text legibility */
+  #ShopHero-{{ sec }} .shero__media::before{
+    content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
+    background: rgba(0,0,0,{{ section.settings.image_overlay_opacity | divided_by: 100.0 }});
+  }
+  {%- if section.settings.show_top_scrim -%}
+  #ShopHero-{{ sec }} .shero__media::after{
+    content:""; position:absolute; top:0; left:0; right:0; height:42%; z-index:1; pointer-events:none;
+    background: linear-gradient(to bottom, rgba(0,0,0,.45), rgba(0,0,0,0));
+  }
+  {%- endif -%}
+  #ShopHero-{{ sec }} .shero__content{ position:absolute; inset:0; z-index:2; display:flex; flex-direction:column; }
+  {%- if section.settings.show_bottom_scrim -%}
+  #ShopHero-{{ sec }} .shero__bottom{
+    background: linear-gradient(to top, rgba(0,0,0,.55), rgba(0,0,0,0));
+  }
+  {%- endif -%}
+  #ShopHero-{{ sec }} .shero__top{
+    padding: clamp(20px,5vw,56px) 5vw 0; text-align: var(--shero-align, center);
+  }
+  #ShopHero-{{ sec }} .shero__bottom{
+    margin-top:auto; padding: 7vw 5vw clamp(22px,5vw,52px); text-align: var(--shero-align, center);
+  }
+  #ShopHero-{{ sec }} .shero--light{ --shero-fg:#fff; --shero-shadow: 0 2px 10px rgba(0,0,0,.35); }
+  #ShopHero-{{ sec }} .shero--dark{ --shero-fg:#111; --shero-shadow:none; }
+  #ShopHero-{{ sec }} .shero__heading{
+    color:var(--shero-fg); text-shadow:var(--shero-shadow); margin:0;
+    font-weight:700; line-height:1.05; letter-spacing:.5px;
+  }
+  #ShopHero-{{ sec }} .shero__heading.h0{ font-size: clamp(34px, 6vw, 72px); }
+  #ShopHero-{{ sec }} .shero__heading.h1{ font-size: clamp(30px, 5vw, 60px); }
+  #ShopHero-{{ sec }} .shero__heading.h2{ font-size: clamp(26px, 4vw, 46px); }
+  #ShopHero-{{ sec }} .shero__line1{
+    color:var(--shero-fg); text-shadow:var(--shero-shadow);
+    font-size: clamp(17px, 2.4vw, 26px); font-weight:600; margin:0 0 6px;
+  }
+  #ShopHero-{{ sec }} .shero__line2{
+    color:var(--shero-fg); text-shadow:var(--shero-shadow);
+    font-size: clamp(13px, 1.6vw, 17px); font-style:italic; opacity:.95; margin:0 0 16px;
+  }
+  #ShopHero-{{ sec }} .shero__btn{
+    display:inline-block; background:#fff; color:#111; text-decoration:none;
+    padding:13px 30px; font-size:clamp(14px,1.6vw,17px); font-weight:600;
+    border-radius:0; border:2px solid #fff; transition:background .2s,color .2s;
+  }
+  #ShopHero-{{ sec }} .shero__btn:hover{ background:transparent; color:#fff; }
+  /* arrows */
+  #ShopHero-{{ sec }} .shero__arrow{
+    position:absolute; top:50%; transform:translateY(-50%); z-index:4;
+    width:44px; height:44px; border:none; border-radius:50%;
+    background:rgba(255,255,255,.82); color:#111; cursor:pointer;
+    font-size:20px; line-height:44px; text-align:center; display:flex; align-items:center; justify-content:center;
+    transition:background .2s;
+  }
+  #ShopHero-{{ sec }} .shero__arrow:hover{ background:#fff; }
+  #ShopHero-{{ sec }} .shero__arrow--prev{ left:16px; }
+  #ShopHero-{{ sec }} .shero__arrow--next{ right:16px; }
+  /* dots */
+  #ShopHero-{{ sec }} .shero__dots{
+    position:absolute; bottom:14px; left:0; right:0; z-index:4;
+    display:flex; gap:9px; justify-content:center;
+  }
+  #ShopHero-{{ sec }} .shero__dot{
+    width:11px; height:11px; border-radius:50%; border:2px solid #fff;
+    background:transparent; padding:0; cursor:pointer;
+  }
+  #ShopHero-{{ sec }} .shero__dot.is-active{ background:#fff; }
+  @media (max-width: 749px){
+    #ShopHero-{{ sec }} .shero__media{ aspect-ratio: 3 / 2; }
+    #ShopHero-{{ sec }} .shero__arrow{ width:38px; height:38px; line-height:38px; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    #ShopHero-{{ sec }} .shero__slide{ transition:none; }
+  }
+</style>
+
+<div id="ShopHero-{{ sec }}" class="color-{{ section.settings.color_scheme }}"
+     data-autoplay="{{ section.settings.autoplay }}"
+     data-speed="{{ section.settings.autoplay_speed | times: 1000 }}"
+     role="region" aria-roledescription="carousel" aria-label="Promotional slideshow">
+  <div class="shero__track">
+    {%- for block in section.blocks -%}
+      {%- liquid
+        case block.settings.image_focal
+          when 'top'         then assign obj = 'center top'
+          when 'upper-third' then assign obj = 'center 30%'
+          when 'lower-third' then assign obj = 'center 70%'
+          when 'bottom'      then assign obj = 'center bottom'
+          else
+            assign obj = 'center center'
+        endcase
+        assign tone = block.settings.slide_text_color | default: 'light'
+      -%}
+      <div class="shero__slide{% if forloop.first %} is-active{% endif %} shero--{{ tone }}"
+           {{ block.shopify_attributes }}
+           role="group" aria-roledescription="slide" aria-label="{{ forloop.index }} of {{ section.blocks.size }}"
+           style="--shero-align: {{ block.settings.text_alignment | default: 'center' }};"
+           {% unless forloop.first %}aria-hidden="true"{% endunless %}>
+        <div class="shero__media">
+          {%- if block.settings.image != blank -%}
+            {{ block.settings.image
+              | image_url: width: 3000
+              | image_tag:
+                  loading: forloop.first | default: false,
+                  widths: '750, 1100, 1500, 2000, 2600, 3000',
+                  sizes: '100vw',
+                  alt: block.settings.image.alt | default: 'Pivot Dancewear',
+                  style: obj | prepend: 'object-position:' | append: ';',
+                  fetchpriority: forloop.first
+            }}
+          {%- elsif block.settings.image_asset != blank -%}
+            <img src="{{ block.settings.image_asset | asset_url }}"
+                 alt="{{ block.settings.image_alt | default: 'Pivot Dancewear' }}"
+                 width="2600" height="1733"
+                 style="object-position: {{ obj }};"
+                 {% if forloop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}>
+          {%- else -%}
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+        </div>
+        <div class="shero__content">
+          {%- if block.settings.heading != blank -%}
+            <div class="shero__top">
+              <h2 class="shero__heading {{ block.settings.heading_size }}">{{ block.settings.heading }}</h2>
+            </div>
+          {%- endif -%}
+          {%- if block.settings.text_line_1 != blank or block.settings.text_line_2 != blank or block.settings.button_label != blank -%}
+            <div class="shero__bottom">
+              {%- if block.settings.text_line_1 != blank -%}<p class="shero__line1">{{ block.settings.text_line_1 }}</p>{%- endif -%}
+              {%- if block.settings.text_line_2 != blank -%}<p class="shero__line2">{{ block.settings.text_line_2 }}</p>{%- endif -%}
+              {%- if block.settings.button_label != blank -%}
+                <a class="shero__btn" href="{{ block.settings.button_link | default: '#' }}">{{ block.settings.button_label }}</a>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endfor -%}
+
+    {%- if section.settings.show_arrows and section.blocks.size > 1 -%}
+      <button class="shero__arrow shero__arrow--prev" type="button" aria-label="Previous slide">&#8249;</button>
+      <button class="shero__arrow shero__arrow--next" type="button" aria-label="Next slide">&#8250;</button>
+    {%- endif -%}
+    {%- if section.settings.show_dots and section.blocks.size > 1 -%}
+      <div class="shero__dots" role="tablist" aria-label="Select a slide">
+        {%- for block in section.blocks -%}
+          <button class="shero__dot{% if forloop.first %} is-active{% endif %}" type="button"
+                  role="tab" aria-label="Go to slide {{ forloop.index }}"
+                  data-index="{{ forloop.index0 }}"></button>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+<script>
+(function(){
+  var root = document.getElementById('ShopHero-{{ sec }}');
+  if(!root) return;
+  var slides = root.querySelectorAll('.shero__slide');
+  var dots   = root.querySelectorAll('.shero__dot');
+  if(slides.length < 2) return;
+  var i = 0, timer = null;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var auto = root.dataset.autoplay === 'true' && !reduce;
+  var speed = parseInt(root.dataset.speed, 10) || 6000;
+  function go(n){
+    i = (n + slides.length) % slides.length;
+    slides.forEach(function(s, idx){
+      var on = idx === i;
+      s.classList.toggle('is-active', on);
+      if(on){ s.removeAttribute('aria-hidden'); } else { s.setAttribute('aria-hidden','true'); }
+    });
+    dots.forEach(function(d, idx){ d.classList.toggle('is-active', idx === i); });
+  }
+  function next(){ go(i + 1); }
+  function prev(){ go(i - 1); }
+  function start(){ if(auto){ stop(); timer = setInterval(next, speed); } }
+  function stop(){ if(timer){ clearInterval(timer); timer = null; } }
+  var p = root.querySelector('.shero__arrow--prev');
+  var nx = root.querySelector('.shero__arrow--next');
+  if(p) p.addEventListener('click', function(){ prev(); start(); });
+  if(nx) nx.addEventListener('click', function(){ next(); start(); });
+  dots.forEach(function(d){
+    d.addEventListener('click', function(){ go(parseInt(d.dataset.index,10)); start(); });
+  });
+  root.addEventListener('mouseenter', stop);
+  root.addEventListener('mouseleave', start);
+  root.addEventListener('focusin', stop);
+  root.addEventListener('focusout', start);
+  document.addEventListener('visibilitychange', function(){ document.hidden ? stop() : start(); });
+  // basic swipe
+  var x0 = null;
+  root.addEventListener('touchstart', function(e){ x0 = e.touches[0].clientX; }, {passive:true});
+  root.addEventListener('touchend', function(e){
+    if(x0 === null) return;
+    var dx = e.changedTouches[0].clientX - x0;
+    if(Math.abs(dx) > 40){ dx < 0 ? next() : prev(); start(); }
+    x0 = null;
+  });
+  start();
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Slideshow Hero",
+  "tag": "section",
+  "class": "section section-shopify-hero",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "select", "id": "image_height", "label": "Slide height",
+      "options": [
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" }
+      ], "default": "large" },
+    { "type": "range", "id": "image_overlay_opacity", "label": "Base image darken", "min": 0, "max": 60, "step": 5, "unit": "%", "default": 25 },
+    { "type": "checkbox", "id": "show_top_scrim", "label": "Top gradient (for heading)", "default": true },
+    { "type": "checkbox", "id": "show_bottom_scrim", "label": "Bottom gradient (for text + button)", "default": true },
+    { "type": "header", "content": "Playback" },
+    { "type": "checkbox", "id": "autoplay", "label": "Auto-rotate slides", "default": true },
+    { "type": "range", "id": "autoplay_speed", "label": "Seconds per slide", "min": 3, "max": 10, "step": 1, "unit": "s", "default": 6 },
+    { "type": "checkbox", "id": "show_arrows", "label": "Show arrows", "default": true },
+    { "type": "checkbox", "id": "show_dots", "label": "Show dots", "default": true },
+    { "type": "header", "content": "Style" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-3" },
+    { "type": "range", "id": "padding_top", "label": "Padding top", "min": 0, "max": 60, "step": 4, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding bottom", "min": 0, "max": 60, "step": 4, "unit": "px", "default": 0 }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "image_asset", "label": "OR image filename in assets/", "info": "Used only if no Image is selected above. e.g. hero-summer-rwb.jpg" },
+        { "type": "text", "id": "image_alt", "label": "Image alt text" },
+        { "type": "select", "id": "image_focal", "label": "Keep in frame (crop anchor)",
+          "options": [
+            { "value": "top", "label": "Top" },
+            { "value": "upper-third", "label": "Upper third (faces)" },
+            { "value": "center", "label": "Center" },
+            { "value": "lower-third", "label": "Lower third" },
+            { "value": "bottom", "label": "Bottom" }
+          ], "default": "upper-third" },
+        { "type": "select", "id": "slide_text_color", "label": "Text color",
+          "options": [ { "value": "light", "label": "Light (on dark/photo)" }, { "value": "dark", "label": "Dark" } ],
+          "default": "light" },
+        { "type": "select", "id": "text_alignment", "label": "Text alignment",
+          "options": [ { "value": "left", "label": "Left" }, { "value": "center", "label": "Center" }, { "value": "right", "label": "Right" } ],
+          "default": "center" },
+        { "type": "header", "content": "Top" },
+        { "type": "text", "id": "heading", "label": "Heading (top of slide)" },
+        { "type": "select", "id": "heading_size", "label": "Heading size",
+          "options": [ { "value": "h0", "label": "Extra large" }, { "value": "h1", "label": "Large" }, { "value": "h2", "label": "Medium" } ],
+          "default": "h1" },
+        { "type": "header", "content": "Bottom" },
+        { "type": "text", "id": "text_line_1", "label": "Text line 1" },
+        { "type": "text", "id": "text_line_2", "label": "Text line 2 (small / bonus)" },
+        { "type": "text", "id": "button_label", "label": "Button label" },
+        { "type": "url", "id": "button_link", "label": "Button link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Slideshow Hero",
+      "blocks": [
+        { "type": "slide", "settings": { "heading": "Bring on Summer!", "text_line_1": "Check out our new Red, White and Blue sets!", "text_line_2": "(Bonus!!! See if you can find our other new fun summer colored set!)", "button_label": "Shop New Colors" } },
+        { "type": "slide" }
+      ]
+    }
+  ]
+}
+{% endschema %}
