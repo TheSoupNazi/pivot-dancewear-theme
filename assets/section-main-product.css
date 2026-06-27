@@ -1492,3 +1492,14 @@ a.product__text {
     border: none;
   }
 }
+
+.product-form__submit.button--primary {
+  background-color: #000000;
+  color: #ffffff;
+  border-color: #000000;
+}
+
+.product-form__submit.button--primary:hover {
+  background-color: #222222;
+  border-color: #222222;
+}
