@@ -136,8 +136,8 @@
     }
   },
   "order": [
-    "rich_text_cHKWnT",
     "slideshow_hero",
+    "rich_text_cHKWnT",
     "featured_collection",
     "custom_liquid_bEMKFW",
     "custom_liquid_HTKaBx"
