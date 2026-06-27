@@ -16,7 +16,7 @@
           "type": "text",
           "name": "Hero Message",
           "settings": {
-            "text": "<p><strong>Pivot Dancewear</strong> was created with one clear purpose: <strong>to bring high-quality, studio-ready dancewear to young dancers\u2014without the premium price tag.</strong></p>"
+            "text": "<p><strong>Pivot Dancewear</strong> was created with one clear purpose: <strong>to bring high-quality, studio-ready dancewear to young dancers—without the premium price tag.</strong></p>"
           }
         }
       },
@@ -107,12 +107,12 @@
             "image_focal": "center",
             "slide_text_color": "light",
             "text_alignment": "center",
-            "heading": "",
+            "heading": "Browse our latest products",
             "heading_size": "h0",
             "text_line_1": "",
             "text_line_2": "",
-            "button_label": "",
-            "button_link": ""
+            "button_label": "Shop all",
+            "button_link": "shopify://collections/all"
           }
         }
       },
