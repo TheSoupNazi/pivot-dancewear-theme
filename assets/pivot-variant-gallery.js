@@ -28,8 +28,9 @@
       const list = allItems[0]?.parentElement;
       if (!list) return;
 
+      const colorNameLower = colorName.toLowerCase();
       const colorItems = allItems.filter(
-        (li) => (li.querySelector('img')?.alt || '').includes(colorName)
+        (li) => (li.querySelector('img')?.alt || '').toLowerCase().includes(colorNameLower)
       );
       const otherItems = allItems.filter((li) => !colorItems.includes(li));
       [...colorItems, ...otherItems].forEach((li) => list.appendChild(li));
