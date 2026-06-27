@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const INTERVAL_MS = 4000;
+  const INTERVAL_MS = 5000;
   const FADE_MS = 400;
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
