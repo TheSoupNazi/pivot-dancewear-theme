@@ -23,9 +23,9 @@
   }
   #ShopHero-{{ sec }} .shero__slide.is-active{ position: relative; opacity: 1; visibility: visible; }
   {%- case section.settings.image_height -%}
-    {%- when 'small' -%}#ShopHero-{{ sec }} .shero__media{ aspect-ratio: 2 / 1; }
-    {%- when 'medium' -%}#ShopHero-{{ sec }} .shero__media{ aspect-ratio: 16 / 9; }
-    {%- else -%}#ShopHero-{{ sec }} .shero__media{ aspect-ratio: 3 / 2; }
+    {%- when 'small' -%}#ShopHero-{{ sec }} .shero__media{ height: min(100vh, 300px); }
+    {%- when 'medium' -%}#ShopHero-{{ sec }} .shero__media{ height: min(100vh, 450px); }
+    {%- else -%}#ShopHero-{{ sec }} .shero__media{ height: min(100vh, 600px); }
   {%- endcase -%}
   #ShopHero-{{ sec }} .shero__media{ position: relative; width: 100%; overflow: hidden; }
   #ShopHero-{{ sec }} .shero__media img{ width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -97,7 +97,7 @@
   }
   #ShopHero-{{ sec }} .shero__dot.is-active{ background:#fff; }
   @media (max-width: 749px){
-    #ShopHero-{{ sec }} .shero__media{ aspect-ratio: 3 / 2; }
+    #ShopHero-{{ sec }} .shero__media{ height: min(100vh, 400px); }
     #ShopHero-{{ sec }} .shero__arrow{ width:38px; height:38px; line-height:38px; }
   }
   @media (prefers-reduced-motion: reduce){
@@ -159,13 +159,16 @@
           {%- endif -%}
         </div>
         <div class="shero__content">
-          {%- if block.settings.heading != blank -%}
+          {%- if block.settings.heading != blank and block.settings.heading_position != 'bottom' -%}
             <div class="shero__top">
               <h2 class="shero__heading {{ block.settings.heading_size }}">{{ block.settings.heading }}</h2>
             </div>
           {%- endif -%}
-          {%- if block.settings.text_line_1 != blank or block.settings.text_line_2 != blank or block.settings.button_label != blank -%}
+          {%- if block.settings.heading_position == 'bottom' or block.settings.text_line_1 != blank or block.settings.text_line_2 != blank or block.settings.button_label != blank -%}
             <div class="shero__bottom">
+              {%- if block.settings.heading != blank and block.settings.heading_position == 'bottom' -%}
+                <h2 class="shero__heading {{ block.settings.heading_size }}">{{ block.settings.heading }}</h2>
+              {%- endif -%}
               {%- if block.settings.text_line_1 != blank -%}<p class="shero__line1">{{ block.settings.text_line_1 }}</p>{%- endif -%}
               {%- if block.settings.text_line_2 != blank -%}<p class="shero__line2">{{ block.settings.text_line_2 }}</p>{%- endif -%}
               {%- if block.settings.button_label != blank -%}
