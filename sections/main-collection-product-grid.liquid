@@ -27,13 +27,19 @@
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
     padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
   }
-
   @media screen and (min-width: 750px) {
     .section-{{ section.id }}-padding {
       padding-top: {{ section.settings.padding_top }}px;
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+  .pivot-specs { display: grid; grid-template-columns: 160px 1fr; max-width: 520px; margin: 0 auto; }
+  .pivot-specs dt { font-weight: 600; padding: 10px 20px 10px 0; border-bottom: 1px solid #efefef; font-size: 0.875rem; color: #111; }
+  .pivot-specs dd { margin: 0; padding: 10px 0; border-bottom: 1px solid #efefef; font-size: 0.875rem; color: #555; }
+  .pivot-accordion > summary { list-style: none; }
+  .pivot-accordion > summary::-webkit-details-marker { display: none; }
+  .pivot-toggle::before { content: '+'; font-size: 1.5rem; font-weight: 300; line-height: 1; }
+  .pivot-accordion[open] .pivot-toggle::before { content: '−'; }
 {%- endstyle -%}
 
 <collection-component
@@ -211,17 +217,24 @@
 
 
   {%- if collection.description != blank -%}
-    <div class="page-width" style="padding: 2rem 1rem;">
-      <details style="border: 1px solid #e0e0e0; border-radius: 4px;">
-        <summary style="padding: 1rem 1.25rem; cursor: pointer; font-size: 0.9rem; font-weight: 600; list-style: none; display: flex; align-items: center; justify-content: space-between;">
-          About this collection
-          <span style="font-size: 1.2rem; line-height: 1;">&#43;</span>
-        </summary>
-        <div class="rte" style="padding: 0 1.25rem 1.25rem; font-size: 0.875rem; color: #444;">
-          {{ collection.description }}
+    {%- assign _pivot_parts = collection.description | split: '</p>' -%}
+    {%- assign _pivot_spec_parts = _pivot_parts | slice: 1, 100 -%}
+    {%- assign _pivot_specs = _pivot_spec_parts | join: '</p>' | strip -%}
+    {%- if _pivot_specs != blank -%}
+      <div style="border-top: 1px solid #e8e8e8; margin-top: 2rem;">
+        <div style="max-width: 760px; margin: 0 auto; padding: 0 1.5rem 3rem;">
+          <details class="pivot-accordion">
+            <summary style="display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 0; cursor: pointer;">
+              <span style="font-size: 1rem; font-weight: 600; letter-spacing: 0.01em;">About this collection</span>
+              <span class="pivot-toggle"></span>
+            </summary>
+            <div style="padding-bottom: 1rem;">
+              {{ _pivot_specs }}
+            </div>
+          </details>
         </div>
-      </details>
-    </div>
+      </div>
+    {%- endif -%}
   {%- endif -%}
 
 {% schema %}
