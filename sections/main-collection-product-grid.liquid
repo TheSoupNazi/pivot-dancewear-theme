@@ -33,9 +33,9 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
-  .pivot-specs { display: grid; grid-template-columns: 160px 1fr; max-width: 520px; margin: 0 auto; }
-  .pivot-specs dt { font-weight: 600; padding: 10px 20px 10px 0; border-bottom: 1px solid #efefef; font-size: 0.875rem; color: #111; }
-  .pivot-specs dd { margin: 0; padding: 10px 0; border-bottom: 1px solid #efefef; font-size: 0.875rem; color: #555; }
+  .pivot-specs { display: grid; grid-template-columns: 170px 1fr; max-width: 560px; margin: 0 auto; }
+  .pivot-specs dt { font-weight: 600; padding: 12px 20px 12px 0; border-bottom: 1px solid #efefef; font-size: 1rem; color: #111; }
+  .pivot-specs dd { margin: 0; padding: 12px 0; border-bottom: 1px solid #efefef; font-size: 1rem; color: #444; }
   .pivot-accordion > summary { list-style: none; }
   .pivot-accordion > summary::-webkit-details-marker { display: none; }
   .pivot-toggle::before { content: '+'; font-size: 1.5rem; font-weight: 300; line-height: 1; }
@@ -152,8 +152,8 @@
             {%- if collection.description != blank -%}
               {%- assign _pivot_intro = collection.description | split: '</strong> ' | last | split: '</p>' | first | strip_html | strip -%}
               {%- if _pivot_intro != blank -%}
-                <div class="page-width" style="padding: 0.25rem 1.5rem 1.25rem; text-align: center;">
-                  <p style="margin: 0; color: #666; font-size: 0.9rem; line-height: 1.6;">{{ _pivot_intro }}</p>
+                <div class="page-width" style="padding: 0.5rem 1.5rem 1.75rem; text-align: center;">
+                  <p style="margin: 0; color: #333; font-size: 1.1rem; line-height: 1.7;">{{ _pivot_intro }}</p>
                 </div>
               {%- endif -%}
             {%- endif -%}
