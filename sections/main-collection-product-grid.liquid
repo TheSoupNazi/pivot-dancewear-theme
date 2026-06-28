@@ -45,7 +45,7 @@
 {%- if collection.description != blank -%}
   {%- assign _pivot_intro = collection.description | split: '</p>' | first | strip_html | strip -%}
   {%- if _pivot_intro != blank -%}
-    <div class="page-width" style="padding: 0.25rem 1.5rem 2.5rem;">
+    <div class="page-width" style="padding-top: 0.25rem; padding-bottom: 2.5rem;">
       <p style="margin: 0; color: #111; font-size: 1.5rem; line-height: 1.65; font-style: italic;">{{ _pivot_intro }}</p>
     </div>
   {%- endif -%}
@@ -222,7 +222,7 @@
     {%- assign _pivot_spec_parts = _pivot_parts | slice: 1, 100 -%}
     {%- assign _pivot_specs = _pivot_spec_parts | join: '</p>' | strip -%}
     {%- if _pivot_specs != blank -%}
-      <div class="page-width" style="padding: 0 1.5rem 3rem;">
+      <div class="page-width" style="padding-top: 0; padding-bottom: 3rem;">
         <details class="pivot-accordion" style="border-top: 1px solid #e0e0e0; margin-top: 3rem;">
           <summary style="display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 0; cursor: pointer;">
             <span style="font-size: 1.25rem; font-weight: 600; color: #111;">About this collection</span>
