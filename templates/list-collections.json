@@ -1,1 +1,83 @@
-{"sections":{"collection_list":{"type":"collection-list","blocks":{"all":{"type":"featured_collection","settings":{"collection":"frontpage"}},"bottoms":{"type":"featured_collection","settings":{"collection":"kids-bottoms"}},"tops":{"type":"featured_collection","settings":{"collection":"kids-tops"}},"black":{"type":"featured_collection","settings":{"collection":"black-dance-shorts"}},"hiwaist":{"type":"featured_collection","settings":{"collection":"high-waisted-dance-shorts"}}},"block_order":["all","bottoms","tops","black","hiwaist"],"settings":{"title":"Collections","heading_size":"h1","image_ratio":"square","columns_desktop":3,"color_scheme":"scheme-1","swipe_on_mobile":false,"padding_top":36,"padding_bottom":36}},"main":{"type":"main-list-collections","settings":{"title":"Collections","sort":"alphabetical","image_ratio":"square","columns_desktop":3,"columns_mobile":"2"}}},"order":["main","collection_list"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "collection_list": {
+      "type": "collection-list",
+      "blocks": {
+        "all": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "frontpage"
+          }
+        },
+        "bottoms": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "kids-bottoms"
+          }
+        },
+        "tops": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "kids-tops"
+          }
+        }
+      },
+      "block_order": [
+        "all",
+        "bottoms",
+        "tops"
+      ],
+      "settings": {
+        "title": "Collections",
+        "heading_size": "h1",
+        "image_ratio": "square",
+        "columns_desktop": 3,
+        "color_scheme": "scheme-1",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "main": {
+      "type": "main-list-collections",
+      "settings": {
+        "title": "Collections",
+        "sort": "alphabetical",
+        "image_ratio": "square",
+        "columns_desktop": 3,
+        "columns_mobile": "2"
+      }
+    },
+    "seo_links": {
+      "type": "custom-liquid",
+      "settings": {
+        "custom_liquid": "<div style=\"text-align:center;padding:4px 24px 40px;font-family:inherit;\">\n  <p style=\"margin:0 0 10px;font-size:13px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#888;\">Browse by style</p>\n  <p style=\"margin:0;font-size:14px;line-height:2;\">\n    <a href=\"/collections/asymmetrical-dance-tops\" style=\"color:#111;text-decoration:underline;margin:0 10px;\">Asymmetrical Dance Tops</a>\n    <span style=\"color:#ccc;\">\u00b7</span>\n    <a href=\"/collections/black-dance-shorts\" style=\"color:#111;text-decoration:underline;margin:0 10px;\">Black Dance Shorts</a>\n    <span style=\"color:#ccc;\">\u00b7</span>\n    <a href=\"/collections/high-waisted-dance-shorts\" style=\"color:#111;text-decoration:underline;margin:0 10px;\">High Waisted Dance Shorts</a>\n  </p>\n</div>",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "hide_main": {
+      "type": "custom-liquid",
+      "settings": {
+        "custom_liquid": "<style>.main-list-collections { display: none; }</style>",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    }
+  },
+  "order": [
+    "collection_list",
+    "seo_links",
+    "hide_main",
+    "main"
+  ]
+}
