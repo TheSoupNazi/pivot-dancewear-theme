@@ -143,6 +143,14 @@
               </div>
             </div>
           {%- else -%}
+            {%- if collection.description != blank -%}
+              {%- assign _pivot_intro = collection.description | split: '</strong> ' | last | split: '</p>' | first | strip_html | strip -%}
+              {%- if _pivot_intro != blank -%}
+                <div class="page-width" style="padding: 0.25rem 1.5rem 1.25rem; text-align: center;">
+                  <p style="margin: 0; color: #666; font-size: 0.9rem; line-height: 1.6;">{{ _pivot_intro }}</p>
+                </div>
+              {%- endif -%}
+            {%- endif -%}
             <div
               class="collection{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}"
             >
