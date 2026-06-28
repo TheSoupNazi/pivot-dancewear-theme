@@ -222,18 +222,16 @@
     {%- assign _pivot_spec_parts = _pivot_parts | slice: 1, 100 -%}
     {%- assign _pivot_specs = _pivot_spec_parts | join: '</p>' | strip -%}
     {%- if _pivot_specs != blank -%}
-      <div style="margin-top: 3rem; border-top: 2px solid #111;">
-        <div class="page-width" style="padding: 0 1.5rem 3rem;">
-          <details class="pivot-accordion">
-            <summary style="display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 0; cursor: pointer;">
-              <span style="font-size: 1.25rem; font-weight: 600; color: #111;">About this collection</span>
-              <span class="pivot-toggle"></span>
-            </summary>
-            <div style="padding-bottom: 1rem;">
-              {{ _pivot_specs }}
-            </div>
-          </details>
-        </div>
+      <div class="page-width" style="padding: 0 1.5rem 3rem;">
+        <details class="pivot-accordion" style="border-top: 1px solid #e0e0e0; margin-top: 3rem;">
+          <summary style="display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 0; cursor: pointer;">
+            <span style="font-size: 1.25rem; font-weight: 600; color: #111;">About this collection</span>
+            <span class="pivot-toggle"></span>
+          </summary>
+          <div style="padding-bottom: 1rem;">
+            {{ _pivot_specs }}
+          </div>
+        </details>
       </div>
     {%- endif -%}
   {%- endif -%}
