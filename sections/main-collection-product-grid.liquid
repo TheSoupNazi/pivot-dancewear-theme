@@ -42,6 +42,15 @@
   .pivot-accordion[open] .pivot-toggle::before { content: '−'; }
 {%- endstyle -%}
 
+{%- if collection.description != blank -%}
+  {%- assign _pivot_intro = collection.description | split: '</p>' | first | strip_html | strip -%}
+  {%- if _pivot_intro != blank -%}
+    <div class="page-width" style="text-align: center; padding: 0.25rem 1.5rem 2.5rem;">
+      <p style="margin: 0 auto; max-width: 680px; color: #222; font-size: 1.25rem; line-height: 1.75; font-style: italic;">{{ _pivot_intro }}</p>
+    </div>
+  {%- endif -%}
+{%- endif -%}
+
 <collection-component
   view-event-payload="{{ collection | standard_event_data: 'view' | escape }}"
   data-collection-id="{{ collection.id }}"
@@ -149,14 +158,6 @@
               </div>
             </div>
           {%- else -%}
-            {%- if collection.description != blank -%}
-              {%- assign _pivot_intro = collection.description | split: '</strong> ' | last | split: '</p>' | first | strip_html | strip -%}
-              {%- if _pivot_intro != blank -%}
-                <div class="page-width" style="padding: 0.5rem 1.5rem 1.75rem; text-align: center;">
-                  <p style="margin: 0; color: #333; font-size: 1.1rem; line-height: 1.7;">{{ _pivot_intro }}</p>
-                </div>
-              {%- endif -%}
-            {%- endif -%}
             <div
               class="collection{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}"
             >
@@ -221,14 +222,14 @@
     {%- assign _pivot_spec_parts = _pivot_parts | slice: 1, 100 -%}
     {%- assign _pivot_specs = _pivot_spec_parts | join: '</p>' | strip -%}
     {%- if _pivot_specs != blank -%}
-      <div style="border-top: 1px solid #e8e8e8; margin-top: 2rem;">
-        <div style="max-width: 760px; margin: 0 auto; padding: 0 1.5rem 3rem;">
+      <div style="background: #f7f7f7; margin-top: 3rem;">
+        <div style="max-width: 760px; margin: 0 auto; padding: 0 2rem 2.5rem;">
           <details class="pivot-accordion">
-            <summary style="display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 0; cursor: pointer;">
-              <span style="font-size: 1rem; font-weight: 600; letter-spacing: 0.01em;">About this collection</span>
-              <span class="pivot-toggle"></span>
+            <summary style="display: flex; justify-content: space-between; align-items: center; padding: 1.75rem 0; cursor: pointer; border-bottom: 1px solid #e0e0e0;">
+              <span style="font-size: 1.1rem; font-weight: 600; letter-spacing: 0.01em; color: #111;">About this collection</span>
+              <span class="pivot-toggle" style="color: #111;"></span>
             </summary>
-            <div style="padding-bottom: 1rem;">
+            <div style="padding-top: 1.75rem; padding-bottom: 0.5rem;">
               {{ _pivot_specs }}
             </div>
           </details>
