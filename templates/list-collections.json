@@ -68,7 +68,7 @@
     "hide_main": {
       "type": "custom-liquid",
       "settings": {
-        "custom_liquid": "<style>#shopify-section-main { display: none !important; }</style>",
+        "custom_liquid": "<style>[id$='__main'] { display: none !important; }</style>",
         "padding_top": 0,
         "padding_bottom": 0
       }
