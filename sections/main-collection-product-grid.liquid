@@ -34,7 +34,7 @@
     }
   }
   @media screen and (min-width: 750px) {
-    .shopify-section h1 { font-size: 36px; }
+    .shopify-section h1 { font-size: 34px; }
   }
   .pivot-specs { display: grid; grid-template-columns: 200px 1fr; max-width: 620px; }
   .pivot-specs dt { font-weight: 600; padding: 14px 20px 14px 0; border-bottom: 1px solid #e8e8e8; font-size: 1.1rem; color: #111; }
@@ -49,7 +49,7 @@
   {%- assign _pivot_intro = collection.description | split: '</p>' | first | strip_html | strip -%}
   {%- if _pivot_intro != blank -%}
     <div class="page-width" style="padding-top: 0.25rem; padding-bottom: 2.5rem;">
-      <p style="margin: 0; color: #111; font-size: 20px; line-height: 1.65; font-style: italic;">{{ _pivot_intro }}</p>
+      <p style="margin: 0; color: #111; font-size: 17px; line-height: 1.65; font-style: italic;">{{ _pivot_intro }}</p>
     </div>
   {%- endif -%}
 {%- endif -%}
