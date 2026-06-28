@@ -29,10 +29,12 @@
   {%- endcase -%}
   #ShopHero-{{ sec }} .shero__media{ position: relative; width: 100%; overflow: hidden; }
   #ShopHero-{{ sec }} .shero__media img{ width: 100%; height: 100%; object-fit: cover; display: block; }
-  /* base + top/bottom scrims for text legibility */
+  /* base overlay + left/right vignette to hide canvas seams */
   #ShopHero-{{ sec }} .shero__media::before{
     content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
-    background: rgba(0,0,0,{{ section.settings.image_overlay_opacity | divided_by: 100.0 }});
+    background:
+      linear-gradient(to right, rgba(0,0,0,.60) 0%, rgba(0,0,0,0) 22%, rgba(0,0,0,0) 78%, rgba(0,0,0,.60) 100%),
+      rgba(0,0,0,{{ section.settings.image_overlay_opacity | divided_by: 100.0 }});
   }
   {%- if section.settings.show_top_scrim -%}
   #ShopHero-{{ sec }} .shero__media::after{
