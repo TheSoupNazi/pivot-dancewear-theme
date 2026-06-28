@@ -33,6 +33,9 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+  @media screen and (min-width: 750px) {
+    .shopify-section h1 { font-size: 48px; }
+  }
   .pivot-specs { display: grid; grid-template-columns: 200px 1fr; max-width: 620px; }
   .pivot-specs dt { font-weight: 600; padding: 14px 20px 14px 0; border-bottom: 1px solid #e8e8e8; font-size: 1.1rem; color: #111; }
   .pivot-specs dd { margin: 0; padding: 14px 0; border-bottom: 1px solid #e8e8e8; font-size: 1.1rem; color: #444; }
@@ -46,7 +49,7 @@
   {%- assign _pivot_intro = collection.description | split: '</p>' | first | strip_html | strip -%}
   {%- if _pivot_intro != blank -%}
     <div class="page-width" style="padding-top: 0.25rem; padding-bottom: 2.5rem;">
-      <p style="margin: 0; color: #111; font-size: 1.5rem; line-height: 1.65; font-style: italic;">{{ _pivot_intro }}</p>
+      <p style="margin: 0; color: #111; font-size: 30px; line-height: 1.65; font-style: italic;">{{ _pivot_intro }}</p>
     </div>
   {%- endif -%}
 {%- endif -%}
