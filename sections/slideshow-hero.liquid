@@ -116,10 +116,10 @@
     {%- for block in section.blocks -%}
       {%- liquid
         case block.settings.image_focal
-          when 'top'         then assign obj = 'center top'
-          when 'upper-third' then assign obj = 'center 30%'
-          when 'lower-third' then assign obj = 'center 70%'
-          when 'bottom'      then assign obj = 'center bottom'
+          when 'top'
+          when 'upper-third'
+          when 'lower-third'
+          when 'bottom'
           else
             assign obj = 'center center'
         endcase
@@ -323,3 +323,22 @@
   ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "          when 'top'         then assign obj = 'center top'"
+  to: "          when 'top'"
+  position: 5636..5656
+- from: "          when 'upper-third' then assign obj = 'center 30%'"
+  to: "          when 'upper-third'"
+  position: 5657..5685
+- from: "          when 'lower-third' then assign obj = 'center 70%'"
+  to: "          when 'lower-third'"
+  position: 5686..5714
+- from: "          when 'bottom'      then assign obj = 'center bottom'"
+  to: "          when 'bottom'"
+  position: 5715..5738
+{% endcomment %}
