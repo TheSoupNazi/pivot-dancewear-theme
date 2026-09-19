@@ -1,0 +1,45 @@
+{
+  "sections": {
+    "ambassador_application": {
+      "type": "ambassador-application",
+      "blocks": {
+        "perk_1": {
+          "type": "perk",
+          "settings": {
+            "perk_text": "Exclusive ambassador discount on all Pivot styles"
+          }
+        },
+        "perk_2": {
+          "type": "perk",
+          "settings": {
+            "perk_text": "Early access to new collections"
+          }
+        },
+        "perk_3": {
+          "type": "perk",
+          "settings": {
+            "perk_text": "Featured on our social media channels"
+          }
+        },
+        "perk_4": {
+          "type": "perk",
+          "settings": {
+            "perk_text": "Official Pivot Ambassador badge & certificate"
+          }
+        }
+      },
+      "block_order": ["perk_1", "perk_2", "perk_3", "perk_4"],
+      "settings": {
+        "variant_id": "",
+        "eyebrow": "Become a",
+        "hero_title": "Pivot Ambassador",
+        "hero_subtitle": "Dance. Inspire. Represent.",
+        "deadline": "",
+        "pitch_text": "We’re looking for passionate young dancers who love Pivot Dancewear and want to share that love with their communities. Our ambassadors represent the brand at competitions, on social media, and in their studios.",
+        "pitch_closing": "",
+        "form_heading": "Apply Now"
+      }
+    }
+  },
+  "order": ["ambassador_application"]
+}

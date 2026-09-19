@@ -1,0 +1,648 @@
+{%- comment -%}
+  SETUP:
+  1. Create a product called "Ambassador Application" priced at $35. Note its
+     variant ID (Admin → Products → [product] → scroll to a variant → the ID
+     is in the URL or via the API).
+  2. Go to Online Store → Pages, create a page, set template to
+     "page.ambassador" (you may need to save once for the template to appear).
+  3. In the Theme Editor, select that page and set the Variant ID field to the
+     $35 variant ID, then edit deadline text and headings as needed.
+
+  PREVIEW (before going live):
+  - Keep the page password-protected or leave it unlinked — it won't appear
+    in navigation unless you add it.
+  - To test checkout flow: use a real variant ID and submit the form;
+    Shopify will add the product to cart and redirect to /checkout.
+{%- endcomment -%}
+
+{%- style -%}
+  /* ─── Scoped to .amb-* so nothing leaks into the rest of the theme ─── */
+
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&family=Dancing+Script:wght@600&display=swap');
+
+  .amb-page {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 5rem;
+    font-family: 'Montserrat', sans-serif;
+    color: #2a1f1f;
+  }
+
+  /* ── Hero / Poster ── */
+  .amb-hero {
+    text-align: center;
+    padding: 3.5rem 2rem 2.5rem;
+    background: #fdf6f0;
+    border-radius: 4px;
+    margin-bottom: 2.5rem;
+  }
+  .amb-hero__eyebrow {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.6rem;
+    color: #c9a09a;
+    margin: 0 0 0.5rem;
+    letter-spacing: 0.02em;
+  }
+  .amb-hero__title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.4rem, 6vw, 3.6rem);
+    font-weight: 300;
+    letter-spacing: 0.04em;
+    line-height: 1.15;
+    margin: 0 0 1rem;
+    color: #1e1214;
+  }
+  .amb-hero__subtitle {
+    font-size: 0.85rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #9e7575;
+    margin: 0 0 1.5rem;
+  }
+  .amb-hero__deadline {
+    display: inline-block;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #fff;
+    background: #c9a09a;
+    padding: 0.35rem 1rem;
+    border-radius: 2px;
+  }
+
+  /* ── Pitch copy ── */
+  .amb-pitch {
+    margin-bottom: 3rem;
+  }
+  .amb-pitch p {
+    font-size: 0.93rem;
+    line-height: 1.8;
+    color: #4a3535;
+    margin: 0 0 1rem;
+  }
+  .amb-pitch__perks {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 0.75rem;
+  }
+  .amb-pitch__perks li {
+    background: #fdf6f0;
+    border-left: 3px solid #c9a09a;
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+
+  /* ── Form wrapper ── */
+  .amb-form-section {
+    border-top: 1px solid #e8d9d4;
+    padding-top: 2.5rem;
+  }
+  .amb-form-section__heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.75rem;
+    font-weight: 400;
+    margin: 0 0 0.25rem;
+    color: #1e1214;
+  }
+  .amb-form-section__sub {
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #9e7575;
+    margin: 0 0 2rem;
+  }
+
+  .amb-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem 1.5rem;
+  }
+  @media (max-width: 600px) {
+    .amb-form { grid-template-columns: 1fr; }
+  }
+
+  .amb-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .amb-field--full { grid-column: 1 / -1; }
+
+  .amb-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #6b4f4f;
+  }
+  .amb-label abbr {
+    text-decoration: none;
+    color: #c9a09a;
+    margin-left: 2px;
+  }
+
+  .amb-input,
+  .amb-textarea,
+  .amb-select {
+    width: 100%;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.88rem;
+    color: #2a1f1f;
+    background: #fff;
+    border: 1px solid #d9c5c0;
+    border-radius: 2px;
+    padding: 0.65rem 0.75rem;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+  }
+  .amb-input:focus,
+  .amb-textarea:focus {
+    outline: none;
+    border-color: #c9a09a;
+  }
+  .amb-textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+
+  .amb-help {
+    font-size: 0.72rem;
+    color: #9e7575;
+    margin-top: 0.1rem;
+  }
+
+  .amb-file-label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    padding: 0.65rem 0.75rem;
+    border: 1px dashed #d9c5c0;
+    border-radius: 2px;
+    background: #fdf6f0;
+    font-size: 0.82rem;
+    color: #9e7575;
+    transition: border-color 0.2s;
+  }
+  .amb-file-label:hover { border-color: #c9a09a; }
+  .amb-file-label input[type="file"] { display: none; }
+  .amb-file-name {
+    font-size: 0.78rem;
+    color: #6b4f4f;
+    margin-top: 0.25rem;
+  }
+
+  /* ── Agreement ── */
+  .amb-agreement {
+    grid-column: 1 / -1;
+    margin-top: 1rem;
+  }
+  .amb-agreement__heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0 0 0.75rem;
+    color: #1e1214;
+  }
+  .amb-agreement__scroll {
+    height: 260px;
+    overflow-y: scroll;
+    border: 1px solid #d9c5c0;
+    border-radius: 2px;
+    padding: 1.25rem 1.25rem 1.25rem 1.5rem;
+    font-size: 0.82rem;
+    line-height: 1.75;
+    color: #4a3535;
+    background: #fdf6f0;
+    margin-bottom: 1rem;
+  }
+  .amb-agreement__scroll p { margin: 0 0 0.75rem; }
+  .amb-agreement__scroll p:last-child { margin-bottom: 0; }
+
+  .amb-checkbox-row {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    margin-bottom: 1.25rem;
+  }
+  .amb-checkbox-row input[type="checkbox"] {
+    margin-top: 3px;
+    accent-color: #c9a09a;
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+  .amb-checkbox-row label {
+    font-size: 0.82rem;
+    line-height: 1.55;
+    color: #4a3535;
+  }
+
+  .amb-sig-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+  @media (max-width: 600px) {
+    .amb-sig-grid { grid-template-columns: 1fr; }
+    .amb-agreement__scroll { height: 200px; }
+  }
+
+  /* ── Error banner ── */
+  .amb-error {
+    display: none;
+    grid-column: 1 / -1;
+    background: #fdf0f0;
+    border: 1px solid #e8a0a0;
+    border-radius: 2px;
+    padding: 0.75rem 1rem;
+    font-size: 0.82rem;
+    color: #8b2020;
+    line-height: 1.5;
+  }
+  .amb-error.is-visible { display: block; }
+
+  /* ── Submit ── */
+  .amb-submit-row {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  .amb-submit {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #fff;
+    background: #2a1f1f;
+    border: none;
+    border-radius: 2px;
+    padding: 1rem 2.25rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .amb-submit:hover { background: #c9a09a; }
+  .amb-submit:disabled { background: #b0a0a0; cursor: not-allowed; }
+  .amb-submit-note {
+    font-size: 0.72rem;
+    color: #9e7575;
+  }
+{%- endstyle -%}
+
+<div class="amb-page">
+
+  {%- comment -%} ── Hero ── {%- endcomment -%}
+  <div class="amb-hero">
+    <p class="amb-hero__eyebrow">{{ section.settings.eyebrow }}</p>
+    <h1 class="amb-hero__title">{{ section.settings.hero_title }}</h1>
+    <p class="amb-hero__subtitle">{{ section.settings.hero_subtitle }}</p>
+    {%- if section.settings.deadline != blank -%}
+      <span class="amb-hero__deadline">{{ section.settings.deadline }}</span>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} ── Pitch ── {%- endcomment -%}
+  <div class="amb-pitch">
+    <p>{{ section.settings.pitch_text }}</p>
+    <ul class="amb-pitch__perks">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'perk' -%}
+          <li {{ block.shopify_attributes }}>{{ block.settings.perk_text }}</li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+    {%- if section.settings.pitch_closing != blank -%}
+      <p>{{ section.settings.pitch_closing }}</p>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} ── Application form ── {%- endcomment -%}
+  <div class="amb-form-section">
+    <h2 class="amb-form-section__heading">{{ section.settings.form_heading }}</h2>
+    <p class="amb-form-section__sub">Application · $35 non-refundable fee</p>
+
+    <form
+      id="amb-form"
+      class="amb-form"
+      action="/cart/add"
+      method="post"
+      enctype="multipart/form-data"
+      novalidate
+    >
+      {%- comment -%} Cart fields {%- endcomment -%}
+      <input type="hidden" name="id" value="{{ section.settings.variant_id }}">
+      <input type="hidden" name="quantity" value="1">
+      <input type="hidden" name="return_to" value="/checkout">
+
+      {%- comment -%} Parent / Guardian {%- endcomment -%}
+      <div class="amb-field">
+        <label class="amb-label" for="amb-guardian-name">Parent / Guardian Name <abbr title="required">*</abbr></label>
+        <input class="amb-input" type="text" id="amb-guardian-name"
+          name="properties[Parent/Guardian Name]" required autocomplete="name">
+      </div>
+
+      <div class="amb-field">
+        <label class="amb-label" for="amb-guardian-email">Parent / Guardian Email <abbr title="required">*</abbr></label>
+        <input class="amb-input" type="email" id="amb-guardian-email"
+          name="properties[Parent/Guardian Email]" required autocomplete="email">
+      </div>
+
+      {%- comment -%} Dancer info {%- endcomment -%}
+      <div class="amb-field">
+        <label class="amb-label" for="amb-dancer-name">Dancer Name <abbr title="required">*</abbr></label>
+        <input class="amb-input" type="text" id="amb-dancer-name"
+          name="properties[Dancer Name]" required>
+      </div>
+
+      <div class="amb-field">
+        <label class="amb-label" for="amb-dancer-age">Dancer Age <abbr title="required">*</abbr></label>
+        <input class="amb-input" type="number" id="amb-dancer-age"
+          name="properties[Dancer Age]" required min="1" max="25">
+      </div>
+
+      <div class="amb-field">
+        <label class="amb-label" for="amb-city-state">City &amp; State</label>
+        <input class="amb-input" type="text" id="amb-city-state"
+          name="properties[City & State]" placeholder="e.g. Austin, TX">
+      </div>
+
+      {%- comment -%} Social {%- endcomment -%}
+      <div class="amb-field">
+        <label class="amb-label" for="amb-instagram">Instagram Handle <abbr title="required">*</abbr></label>
+        <input class="amb-input" type="text" id="amb-instagram"
+          name="properties[Instagram Handle]" required placeholder="@handle">
+      </div>
+
+      <div class="amb-field">
+        <label class="amb-label" for="amb-tiktok">TikTok Handle</label>
+        <input class="amb-input" type="text" id="amb-tiktok"
+          name="properties[TikTok Handle]" placeholder="@handle">
+      </div>
+
+      <div class="amb-field">
+        <label class="amb-label" for="amb-followers">Approx. Follower Count</label>
+        <input class="amb-input" type="text" id="amb-followers"
+          name="properties[Approx. Follower Count]" placeholder="e.g. 2,500">
+      </div>
+
+      {%- comment -%} Dance video {%- endcomment -%}
+      <div class="amb-field amb-field--full">
+        <label class="amb-label" for="amb-video">Dance Video Link <abbr title="required">*</abbr></label>
+        <input class="amb-input" type="url" id="amb-video"
+          name="properties[Dance Video Link]" required
+          placeholder="https://…">
+        <span class="amb-help">Paste a YouTube, Instagram, TikTok, or Google Drive link</span>
+      </div>
+
+      <div class="amb-field amb-field--full">
+        <label class="amb-label" for="amb-styles">Dance Styles</label>
+        <input class="amb-input" type="text" id="amb-styles"
+          name="properties[Dance Styles]" placeholder="e.g. Contemporary, Jazz, Lyrical">
+      </div>
+
+      {%- comment -%} Essay questions {%- endcomment -%}
+      <div class="amb-field amb-field--full">
+        <label class="amb-label" for="amb-why">Why do you want to be a Pivot Ambassador? <abbr title="required">*</abbr></label>
+        <textarea class="amb-textarea" id="amb-why"
+          name="properties[Why do you want to be a Pivot Ambassador?]"
+          required rows="4"></textarea>
+      </div>
+
+      <div class="amb-field amb-field--full">
+        <label class="amb-label" for="amb-journey">Tell us about your dance journey <abbr title="required">*</abbr></label>
+        <textarea class="amb-textarea" id="amb-journey"
+          name="properties[Tell us about your dance journey]"
+          required rows="4"></textarea>
+      </div>
+
+      {%- comment -%} Headshot upload {%- endcomment -%}
+      <div class="amb-field amb-field--full">
+        <span class="amb-label">Headshot <abbr title="required">*</abbr></span>
+        <label class="amb-file-label" for="amb-headshot">
+          <input type="file" id="amb-headshot"
+            name="properties[Headshot]"
+            accept="image/*" required>
+          <span id="amb-file-name-display">Choose a photo (JPG, PNG — max 20 MB)</span>
+        </label>
+        <span class="amb-file-name" id="amb-selected-file"></span>
+        <span class="amb-help">Max file size: 20 MB</span>
+      </div>
+
+      {%- comment -%} Agreement {%- endcomment -%}
+      <div class="amb-field amb-field--full amb-agreement">
+        <h3 class="amb-agreement__heading">Ambassador Agreement</h3>
+        <div class="amb-agreement__scroll">
+          {%- render 'ambassador-agreement' -%}
+        </div>
+
+        <div class="amb-checkbox-row">
+          <input
+            type="checkbox"
+            id="amb-agree-check"
+            name="properties[Agreement Accepted]"
+            value="Yes — I have read and agree to the Pivot Ambassador Agreement"
+            required
+          >
+          <label for="amb-agree-check">
+            I have read the full Pivot Ambassador Agreement above and agree to its terms on behalf of myself and my dancer.
+          </label>
+        </div>
+
+        <div class="amb-sig-grid">
+          <div class="amb-field">
+            <label class="amb-label" for="amb-signature">Signature (Parent/Guardian full name) <abbr title="required">*</abbr></label>
+            <input class="amb-input" type="text" id="amb-signature"
+              name="properties[Signature (Parent/Guardian full name)]"
+              required placeholder="Type your full legal name">
+          </div>
+          <div class="amb-field">
+            <label class="amb-label" for="amb-sig-date">Date</label>
+            <input class="amb-input" type="text" id="amb-sig-date"
+              name="properties[Signature Date]" readonly>
+          </div>
+        </div>
+      </div>
+
+      {%- comment -%} Error banner {%- endcomment -%}
+      <div class="amb-error" id="amb-error" role="alert"></div>
+
+      {%- comment -%} Submit {%- endcomment -%}
+      <div class="amb-submit-row">
+        <button type="submit" class="amb-submit" id="amb-submit">
+          Submit application &amp; pay $35
+        </button>
+        <span class="amb-submit-note">You'll be taken to Shopify checkout to complete your $35 payment.</span>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<script>
+(function () {
+  // Prefill today's date
+  const dateField = document.getElementById('amb-sig-date');
+  if (dateField) {
+    const now = new Date();
+    dateField.value = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  }
+
+  // Show selected filename
+  const fileInput = document.getElementById('amb-headshot');
+  const fileDisplay = document.getElementById('amb-selected-file');
+  if (fileInput && fileDisplay) {
+    fileInput.addEventListener('change', function () {
+      const file = this.files[0];
+      if (file) {
+        fileDisplay.textContent = file.name + ' (' + (file.size / 1024 / 1024).toFixed(1) + ' MB)';
+      } else {
+        fileDisplay.textContent = '';
+      }
+    });
+  }
+
+  // Validate on submit
+  const form = document.getElementById('amb-form');
+  const errorBanner = document.getElementById('amb-error');
+  const submitBtn = document.getElementById('amb-submit');
+
+  if (!form) return;
+
+  form.addEventListener('submit', function (e) {
+    const errors = [];
+
+    // Required text/email/number/textarea fields
+    form.querySelectorAll('[required]:not([type="checkbox"]):not([type="file"])').forEach(function (field) {
+      if (!field.value.trim()) {
+        const label = form.querySelector('label[for="' + field.id + '"]');
+        const name = label ? label.textContent.replace('*', '').trim() : field.name;
+        errors.push('"' + name + '" is required.');
+      }
+    });
+
+    // URL validation for video link
+    const videoField = document.getElementById('amb-video');
+    if (videoField && videoField.value.trim()) {
+      try { new URL(videoField.value.trim()); } catch (_) {
+        errors.push('Dance Video Link must be a valid URL (e.g. https://youtube.com/…).');
+      }
+    }
+
+    // Headshot required + size
+    const headshot = fileInput ? fileInput.files[0] : null;
+    if (!headshot) {
+      errors.push('A headshot photo is required.');
+    } else if (headshot.size > 20 * 1024 * 1024) {
+      errors.push('Headshot must be under 20 MB. Your file is ' + (headshot.size / 1024 / 1024).toFixed(1) + ' MB.');
+    }
+
+    // Agreement checkbox
+    const checkbox = document.getElementById('amb-agree-check');
+    if (checkbox && !checkbox.checked) {
+      errors.push('You must read and accept the Ambassador Agreement.');
+    }
+
+    if (errors.length > 0) {
+      e.preventDefault();
+      errorBanner.innerHTML = '<strong>Please fix the following before submitting:</strong><ul style="margin:0.5rem 0 0 1.25rem;padding:0">' +
+        errors.map(function (err) { return '<li>' + err + '</li>'; }).join('') + '</ul>';
+      errorBanner.classList.add('is-visible');
+      errorBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    } else {
+      errorBanner.classList.remove('is-visible');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Submitting…';
+    }
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Ambassador Application",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "variant_id",
+      "label": "Ambassador Application Variant ID",
+      "info": "The variant ID of your $35 'Ambassador Application' product. Find it in Admin → Products → [product] → variant URL."
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "Become a"
+    },
+    {
+      "type": "text",
+      "id": "hero_title",
+      "label": "Hero title",
+      "default": "Pivot Ambassador"
+    },
+    {
+      "type": "text",
+      "id": "hero_subtitle",
+      "label": "Hero subtitle",
+      "default": "Dance. Inspire. Represent."
+    },
+    {
+      "type": "text",
+      "id": "deadline",
+      "label": "Deadline text (leave blank to hide)",
+      "placeholder": "Applications close October 31, 2026"
+    },
+    {
+      "type": "textarea",
+      "id": "pitch_text",
+      "label": "Opening pitch paragraph",
+      "default": "We're looking for passionate young dancers who love Pivot Dancewear and want to share that love with their communities. Our ambassadors represent the brand at competitions, on social media, and in their studios."
+    },
+    {
+      "type": "textarea",
+      "id": "pitch_closing",
+      "label": "Closing pitch paragraph (optional)"
+    },
+    {
+      "type": "text",
+      "id": "form_heading",
+      "label": "Form section heading",
+      "default": "Apply Now"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "perk",
+      "name": "Ambassador Perk",
+      "settings": [
+        {
+          "type": "text",
+          "id": "perk_text",
+          "label": "Perk description",
+          "default": "Exclusive discount on all Pivot styles"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ambassador Application",
+      "blocks": [
+        { "type": "perk", "settings": { "perk_text": "Exclusive ambassador discount on all Pivot styles" } },
+        { "type": "perk", "settings": { "perk_text": "Early access to new collections" } },
+        { "type": "perk", "settings": { "perk_text": "Featured on our social media channels" } },
+        { "type": "perk", "settings": { "perk_text": "Official Pivot Ambassador badge & certificate" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
