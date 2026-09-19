@@ -4,10 +4,8 @@
 {%- endcomment -%}
 
 {%- style -%}
-  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600&family=Dancing+Script:wght@600&display=swap');
-
   .ambf-page {
-    font-family: 'Montserrat', sans-serif;
+    font-family: var(--font-body-family);
     color: #2a1a1a;
     max-width: 720px;
     margin: 0 auto;
@@ -22,13 +20,13 @@
     border-bottom: 1px solid #e8d9d4;
   }
   .ambf-header__eyebrow {
-    font-family: 'Dancing Script', cursive;
+    font-family: var(--font-body-family);
     font-size: 1.3rem;
     color: #c97a8e;
     margin: 0 0 0.25rem;
   }
   .ambf-header__title {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-heading-family);
     font-size: 2.25rem;
     font-weight: 400;
     letter-spacing: 0.04em;
@@ -76,7 +74,7 @@
 
   .ambf-input, .ambf-textarea {
     width: 100%;
-    font-family: 'Montserrat', sans-serif;
+    font-family: var(--font-body-family);
     font-size: 0.88rem;
     color: #2a1f1f;
     background: #fff;
@@ -111,7 +109,7 @@
   /* ── Agreement ── */
   .ambf-agreement { grid-column: 1 / -1; margin-top: 0.5rem; }
   .ambf-agreement__heading {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-heading-family);
     font-size: 1.2rem;
     font-weight: 600;
     margin: 0 0 0.75rem;
@@ -177,7 +175,7 @@
     margin-top: 0.5rem;
   }
   .ambf-submit {
-    font-family: 'Montserrat', sans-serif;
+    font-family: var(--font-body-family);
     font-size: 0.78rem;
     font-weight: 600;
     letter-spacing: 0.15em;
