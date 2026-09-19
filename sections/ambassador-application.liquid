@@ -15,7 +15,7 @@
   .amb-page {
     font-family: 'Montserrat', sans-serif;
     color: #2a1a1a;
-    padding: 0 5rem 3rem;
+    padding-bottom: 3rem;
   }
 
   /* ── Header ── */
@@ -229,7 +229,7 @@
   /* ── Stats band ── */
   .amb-stats-band {
     background: #f0d8d8;
-    padding: 4rem 5rem;
+    padding: 4rem 0;
     text-align: center;
   }
   .amb-stats-row {
@@ -462,7 +462,7 @@
   .amb-submit-note { font-size: 0.7rem; color: #9e7575; }
 {%- endstyle -%}
 
-<div class="amb-page">
+<div class="amb-page page-width">
 
   {%- comment -%} ── HERO ── {%- endcomment -%}
   <div class="amb-header">
@@ -549,6 +549,7 @@
 
 {%- comment -%} ── STATS BAND — full-width, outside the centered wrapper ── {%- endcomment -%}
 <div class="amb-stats-band">
+<div class="page-width" style="padding-top:0;padding-bottom:0;">
 
   <div class="amb-stats-row">
     <div class="amb-stat">
@@ -577,6 +578,7 @@
 
   <p class="amb-stats__contact">Pivot Dancewear &middot; Questions? Email Jessica at <a href="mailto:hello@pivotdancewear.com">hello@pivotdancewear.com</a></p>
 
+</div>
 </div>
 
 {% schema %}
