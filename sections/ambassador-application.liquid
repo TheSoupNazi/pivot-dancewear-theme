@@ -15,16 +15,15 @@
   .amb-page {
     font-family: 'Montserrat', sans-serif;
     color: #2a1a1a;
-    padding: 0 3rem 5rem;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 3rem 3rem;
   }
 
   /* ── Header ── */
   .amb-header {
     text-align: center;
     padding: 3.5rem 0 2rem;
-    max-width: 900px;
-    margin-left: auto;
-    margin-right: auto;
   }
   .amb-header__pivot {
     font-family: 'Cormorant Garamond', serif;
@@ -128,9 +127,8 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 2.5rem 1.5rem;
-    margin: 0 auto 3rem;
+    margin: 0 0 3rem;
     text-align: center;
-    max-width: 800px;
   }
   .amb-perk {
     display: flex;
@@ -178,8 +176,7 @@
   .amb-cta-wrap {
     display: flex;
     justify-content: center;
-    margin: 0 auto 3.5rem;
-    max-width: 800px;
+    margin: 0 0 3.5rem;
   }
   .amb-cta-btn {
     display: inline-block;
@@ -202,10 +199,9 @@
   /* ── Divider quote ── */
   .amb-quote-section {
     text-align: center;
-    margin: 0 auto;
+    margin: 0;
     padding: 0 0 3rem;
     border-bottom: none;
-    max-width: 800px;
   }
   .amb-hr {
     border: none;
@@ -235,8 +231,7 @@
   /* ── Stats band ── */
   .amb-stats-band {
     background: #f0d8d8;
-    margin: 0 -3rem;
-    padding: 4rem 6rem;
+    padding: 4rem 3rem;
     text-align: center;
   }
   .amb-stats-row {
@@ -552,38 +547,37 @@
     <p class="amb-community-quote">More than dancewear. <span class="amb-quote-heart">♥</span> <em>It's a community.</em></p>
   </div>
 
-  {%- comment -%} ── STATS BAND ── {%- endcomment -%}
-  <div class="amb-stats-band">
+</div>
 
-    <div class="amb-stats-row">
-      <div class="amb-stat">
-        <p class="amb-stat__num"><sup>$</sup>35</p>
-        <p class="amb-stat__label">Non-Refundable Fee</p>
-      </div>
-      <div class="amb-stat">
-        <p class="amb-stat__num">4<sup>×</sup></p>
-        <p class="amb-stat__label">Free Sets / Year</p>
-      </div>
-      <div class="amb-stat">
-        <p class="amb-stat__num">20<sup>%</sup></p>
-        <p class="amb-stat__label">Off Just for Applying</p>
-      </div>
+{%- comment -%} ── STATS BAND — full-width, outside the centered wrapper ── {%- endcomment -%}
+<div class="amb-stats-band">
+
+  <div class="amb-stats-row">
+    <div class="amb-stat">
+      <p class="amb-stat__num"><sup>$</sup>35</p>
+      <p class="amb-stat__label">Non-Refundable Fee</p>
     </div>
-
-    <p class="amb-stats__quote">Apply with a headshot, a short dance video, your socials, and a few questions. Sign the agreement, pay the $35 fee, and you're in the running.</p>
-
-    <p class="amb-stats__body">In return, we ask our ambassadors to post at least once a month wearing Pivot, tag @pivotdancewear, and share their genuine love for the brand with their dance community.</p>
-
-    <div class="amb-cta-wrap" style="margin-bottom:0;">
-      <a href="/pages/ambassador-apply" class="amb-cta-btn">Start My Application &nbsp;→</a>
+    <div class="amb-stat">
+      <p class="amb-stat__num">4<sup>×</sup></p>
+      <p class="amb-stat__label">Free Sets / Year</p>
     </div>
-
-    <p class="amb-stats__disclaimer">A parent or guardian applies and signs for dancers under 18. Applying and paying the fee does not guarantee acceptance.</p>
-
-    <p class="amb-stats__contact">Pivot Dancewear &middot; Questions? Email Jessica at <a href="mailto:hello@pivotdancewear.com">hello@pivotdancewear.com</a></p>
-
+    <div class="amb-stat">
+      <p class="amb-stat__num">20<sup>%</sup></p>
+      <p class="amb-stat__label">Off Just for Applying</p>
+    </div>
   </div>
 
+  <p class="amb-stats__quote">Apply with a headshot, a short dance video, your socials, and a few questions. Sign the agreement, pay the $35 fee, and you're in the running.</p>
+
+  <p class="amb-stats__body">In return, we ask our ambassadors to post at least once a month wearing Pivot, tag @pivotdancewear, and share their genuine love for the brand with their dance community.</p>
+
+  <div class="amb-cta-wrap" style="margin-bottom:0;">
+    <a href="/pages/ambassador-apply" class="amb-cta-btn">Start My Application &nbsp;→</a>
+  </div>
+
+  <p class="amb-stats__disclaimer">A parent or guardian applies and signs for dancers under 18. Applying and paying the fee does not guarantee acceptance.</p>
+
+  <p class="amb-stats__contact">Pivot Dancewear &middot; Questions? Email Jessica at <a href="mailto:hello@pivotdancewear.com">hello@pivotdancewear.com</a></p>
 
 </div>
 
