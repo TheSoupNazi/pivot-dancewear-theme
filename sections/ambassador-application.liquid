@@ -124,19 +124,20 @@
   .amb-perks {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 3.5rem 2rem;
-    margin: 0 0 3.5rem;
+    gap: 2.5rem 1.5rem;
+    margin: 0 auto 3.5rem;
     text-align: center;
+    max-width: 760px;
   }
   .amb-perk {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.1rem;
+    gap: 0.9rem;
   }
   .amb-perk__icon {
-    width: 110px;
-    height: 110px;
+    width: 75px;
+    height: 75px;
     background: #f0d8d8;
     border-radius: 50%;
     display: flex;
@@ -146,8 +147,8 @@
     flex-shrink: 0;
   }
   .amb-perk__icon svg {
-    width: 40px;
-    height: 40px;
+    width: 28px;
+    height: 28px;
     stroke: #4a2a2a;
     fill: none;
     stroke-width: 1.5;
@@ -324,9 +325,9 @@
   }
   @media (max-width: 580px) {
     .amb-perks { grid-template-columns: repeat(3, 1fr); gap: 1.5rem 0.5rem; }
-    .amb-perk__icon { width: 70px; height: 70px; }
-    .amb-perk__icon svg { width: 26px; height: 26px; }
-    .amb-perk__label { font-size: 0.65rem; }
+    .amb-perk__icon { width: 55px; height: 55px; }
+    .amb-perk__icon svg { width: 20px; height: 20px; }
+    .amb-perk__label { font-size: 0.62rem; }
     .amb-stats-row { grid-template-columns: repeat(3, 1fr); }
     .amb-stat__num { font-size: 3rem; }
     .amb-stat__num sup { font-size: 1.3rem; }
@@ -548,8 +549,7 @@
 </div>
 
 {%- comment -%} ── STATS BAND ── {%- endcomment -%}
-<div class="amb-stats-band">
-<div class="page-width" style="padding-top:0;padding-bottom:0;text-align:center;">
+<div class="amb-stats-band page-width">
 
   <div class="amb-stats-row">
     <div class="amb-stat">
@@ -578,7 +578,6 @@
 
   <p class="amb-stats__contact">Pivot Dancewear &middot; Questions? Email Jessica at <a href="mailto:hello@pivotdancewear.com">hello@pivotdancewear.com</a></p>
 
-</div>
 </div>
 
 {% schema %}
