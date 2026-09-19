@@ -539,7 +539,7 @@
 
   {%- comment -%} ── TOP CTA ── {%- endcomment -%}
   <div class="amb-cta-wrap">
-    <a href="#amb-form" class="amb-cta-btn">Apply Now &nbsp;→</a>
+    <a href="/pages/ambassador-apply" class="amb-cta-btn">Apply Now &nbsp;→</a>
   </div>
 
   {%- comment -%} ── DIVIDER QUOTE ── {%- endcomment -%}
@@ -571,7 +571,7 @@
     <p class="amb-stats__body">In return, we ask our ambassadors to post at least once a month wearing Pivot, tag @pivotdancewear, and share their genuine love for the brand with their dance community.</p>
 
     <div class="amb-cta-wrap" style="margin-bottom:0;">
-      <a href="#amb-form" class="amb-cta-btn">Start My Application &nbsp;→</a>
+      <a href="/pages/ambassador-apply" class="amb-cta-btn">Start My Application &nbsp;→</a>
     </div>
 
     <p class="amb-stats__disclaimer">A parent or guardian applies and signs for dancers under 18. Applying and paying the fee does not guarantee acceptance.</p>
@@ -580,211 +580,14 @@
 
   </div>
 
-  {%- comment -%} ── APPLICATION FORM ── {%- endcomment -%}
-  <div class="amb-form-section" id="amb-form">
-    <h2 class="amb-form-section__heading">{{ section.settings.form_heading }}</h2>
-    <p class="amb-form-section__sub">Application · $35 non-refundable fee</p>
-
-    <form
-      class="amb-form"
-      action="/cart/add"
-      method="post"
-      enctype="multipart/form-data"
-      novalidate
-    >
-      <input type="hidden" name="id" value="{{ section.settings.variant_id }}">
-      <input type="hidden" name="quantity" value="1">
-      <input type="hidden" name="return_to" value="/checkout">
-
-      <div class="amb-field">
-        <label class="amb-label" for="amb-guardian-name">Parent / Guardian Name <abbr title="required">*</abbr></label>
-        <input class="amb-input" type="text" id="amb-guardian-name" name="properties[Parent/Guardian Name]" required autocomplete="name">
-      </div>
-
-      <div class="amb-field">
-        <label class="amb-label" for="amb-guardian-email">Parent / Guardian Email <abbr title="required">*</abbr></label>
-        <input class="amb-input" type="email" id="amb-guardian-email" name="properties[Parent/Guardian Email]" required autocomplete="email">
-      </div>
-
-      <div class="amb-field">
-        <label class="amb-label" for="amb-dancer-name">Dancer Name <abbr title="required">*</abbr></label>
-        <input class="amb-input" type="text" id="amb-dancer-name" name="properties[Dancer Name]" required>
-      </div>
-
-      <div class="amb-field">
-        <label class="amb-label" for="amb-dancer-age">Dancer Age <abbr title="required">*</abbr></label>
-        <input class="amb-input" type="number" id="amb-dancer-age" name="properties[Dancer Age]" required min="1" max="25">
-      </div>
-
-      <div class="amb-field">
-        <label class="amb-label" for="amb-city-state">City &amp; State</label>
-        <input class="amb-input" type="text" id="amb-city-state" name="properties[City & State]" placeholder="e.g. Austin, TX">
-      </div>
-
-      <div class="amb-field">
-        <label class="amb-label" for="amb-instagram">Instagram Handle <abbr title="required">*</abbr></label>
-        <input class="amb-input" type="text" id="amb-instagram" name="properties[Instagram Handle]" required placeholder="@handle">
-      </div>
-
-      <div class="amb-field">
-        <label class="amb-label" for="amb-tiktok">TikTok Handle</label>
-        <input class="amb-input" type="text" id="amb-tiktok" name="properties[TikTok Handle]" placeholder="@handle">
-      </div>
-
-      <div class="amb-field">
-        <label class="amb-label" for="amb-followers">Approx. Follower Count</label>
-        <input class="amb-input" type="text" id="amb-followers" name="properties[Approx. Follower Count]" placeholder="e.g. 2,500">
-      </div>
-
-      <div class="amb-field amb-field--full">
-        <label class="amb-label" for="amb-video">Dance Video Link <abbr title="required">*</abbr></label>
-        <input class="amb-input" type="url" id="amb-video" name="properties[Dance Video Link]" required placeholder="https://…">
-        <span class="amb-help">Paste a YouTube, Instagram, TikTok, or Google Drive link</span>
-      </div>
-
-      <div class="amb-field amb-field--full">
-        <label class="amb-label" for="amb-styles">Dance Styles</label>
-        <input class="amb-input" type="text" id="amb-styles" name="properties[Dance Styles]" placeholder="e.g. Contemporary, Jazz, Lyrical">
-      </div>
-
-      <div class="amb-field amb-field--full">
-        <label class="amb-label" for="amb-why">Why do you want to be a Pivot Ambassador? <abbr title="required">*</abbr></label>
-        <textarea class="amb-textarea" id="amb-why" name="properties[Why do you want to be a Pivot Ambassador?]" required rows="4"></textarea>
-      </div>
-
-      <div class="amb-field amb-field--full">
-        <label class="amb-label" for="amb-journey">Tell us about your dance journey <abbr title="required">*</abbr></label>
-        <textarea class="amb-textarea" id="amb-journey" name="properties[Tell us about your dance journey]" required rows="4"></textarea>
-      </div>
-
-      <div class="amb-field amb-field--full">
-        <span class="amb-label">Headshot <abbr title="required">*</abbr></span>
-        <label class="amb-file-label" for="amb-headshot">
-          <input type="file" id="amb-headshot" name="properties[Headshot]" accept="image/*" required>
-          <span>Choose a photo (JPG, PNG — max 20 MB)</span>
-        </label>
-        <span class="amb-file-name" id="amb-selected-file"></span>
-        <span class="amb-help">Max file size: 20 MB</span>
-      </div>
-
-      <div class="amb-field amb-field--full amb-agreement">
-        <h3 class="amb-agreement__heading">Ambassador Agreement</h3>
-        <div class="amb-agreement__scroll">
-          {%- render 'ambassador-agreement' -%}
-        </div>
-        <div class="amb-checkbox-row">
-          <input type="checkbox" id="amb-agree-check"
-            name="properties[Agreement Accepted]"
-            value="Yes — I have read and agree to the Pivot Ambassador Agreement"
-            required>
-          <label for="amb-agree-check">I have read the full Pivot Ambassador Agreement above and agree to its terms on behalf of myself and my dancer.</label>
-        </div>
-        <div class="amb-sig-grid">
-          <div class="amb-field">
-            <label class="amb-label" for="amb-signature">Signature — Parent/Guardian full name <abbr title="required">*</abbr></label>
-            <input class="amb-input" type="text" id="amb-signature" name="properties[Signature (Parent/Guardian full name)]" required placeholder="Type your full legal name">
-          </div>
-          <div class="amb-field">
-            <label class="amb-label" for="amb-sig-date">Date</label>
-            <input class="amb-input" type="text" id="amb-sig-date" name="properties[Signature Date]" readonly>
-          </div>
-        </div>
-      </div>
-
-      <div class="amb-error" id="amb-error" role="alert"></div>
-
-      <div class="amb-submit-row">
-        <button type="submit" class="amb-submit" id="amb-submit">Submit application &amp; pay $35 →</button>
-        <span class="amb-submit-note">You'll be taken to Shopify checkout to complete your $35 payment.</span>
-      </div>
-
-    </form>
-  </div>
 
 </div>
-
-<script>
-(function () {
-  const dateField = document.getElementById('amb-sig-date');
-  if (dateField) {
-    dateField.value = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-  }
-
-  const fileInput = document.getElementById('amb-headshot');
-  const fileDisplay = document.getElementById('amb-selected-file');
-  if (fileInput && fileDisplay) {
-    fileInput.addEventListener('change', function () {
-      const f = this.files[0];
-      fileDisplay.textContent = f ? f.name + ' (' + (f.size / 1024 / 1024).toFixed(1) + ' MB)' : '';
-    });
-  }
-
-  const form = document.querySelector('.amb-form');
-  const errorBanner = document.getElementById('amb-error');
-  const submitBtn = document.getElementById('amb-submit');
-  if (!form) return;
-
-  form.addEventListener('submit', function (e) {
-    const errors = [];
-
-    form.querySelectorAll('[required]:not([type="checkbox"]):not([type="file"])').forEach(function (field) {
-      if (!field.value.trim()) {
-        const label = form.querySelector('label[for="' + field.id + '"]');
-        errors.push('"' + (label ? label.textContent.replace('*','').trim() : field.name) + '" is required.');
-      }
-    });
-
-    const video = document.getElementById('amb-video');
-    if (video && video.value.trim()) {
-      try { new URL(video.value.trim()); } catch(_) {
-        errors.push('Dance Video Link must be a valid URL.');
-      }
-    }
-
-    const headshot = fileInput ? fileInput.files[0] : null;
-    if (!headshot) {
-      errors.push('A headshot photo is required.');
-    } else if (headshot.size > 20 * 1024 * 1024) {
-      errors.push('Headshot must be under 20 MB (yours is ' + (headshot.size/1024/1024).toFixed(1) + ' MB).');
-    }
-
-    const checkbox = document.getElementById('amb-agree-check');
-    if (checkbox && !checkbox.checked) errors.push('You must accept the Ambassador Agreement.');
-
-    if (errors.length) {
-      e.preventDefault();
-      errorBanner.innerHTML = '<strong>Please fix the following:</strong><ul style="margin:.5rem 0 0 1.25rem;padding:0">' +
-        errors.map(function(e){ return '<li>'+e+'</li>'; }).join('') + '</ul>';
-      errorBanner.classList.add('is-visible');
-      errorBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    } else {
-      errorBanner.classList.remove('is-visible');
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Submitting…';
-    }
-  });
-})();
-</script>
 
 {% schema %}
 {
   "name": "Ambassador Application",
   "tag": "section",
-  "settings": [
-    {
-      "type": "text",
-      "id": "variant_id",
-      "label": "Ambassador Application Variant ID",
-      "default": "53608488534325",
-      "info": "The variant ID of your $35 'Ambassador Application' product."
-    },
-    {
-      "type": "text",
-      "id": "form_heading",
-      "label": "Form heading",
-      "default": "Apply Now"
-    }
-  ],
+  "settings": [],
   "presets": [
     { "name": "Ambassador Application" }
   ]

@@ -1,0 +1,404 @@
+{%- comment -%}
+  Ambassador application form — lives on /pages/ambassador-apply.
+  Set variant_id in the Theme Editor to the $35 Ambassador Application product variant.
+{%- endcomment -%}
+
+{%- style -%}
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600&family=Dancing+Script:wght@600&display=swap');
+
+  .ambf-page {
+    font-family: 'Montserrat', sans-serif;
+    color: #2a1a1a;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 5rem;
+  }
+
+  /* ── Header ── */
+  .ambf-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #e8d9d4;
+  }
+  .ambf-header__eyebrow {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.3rem;
+    color: #c97a8e;
+    margin: 0 0 0.25rem;
+  }
+  .ambf-header__title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.25rem;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    margin: 0 0 0.5rem;
+    color: #1a1010;
+  }
+  .ambf-header__sub {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #9e7575;
+    margin: 0;
+  }
+  .ambf-back {
+    display: inline-block;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #9e7575;
+    text-decoration: none;
+    margin-bottom: 1.5rem;
+  }
+  .ambf-back:hover { color: #c97a8e; }
+
+  /* ── Form grid ── */
+  .ambf-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem 1.5rem;
+  }
+  @media (max-width: 580px) { .ambf-form { grid-template-columns: 1fr; } }
+
+  .ambf-field { display: flex; flex-direction: column; gap: 0.35rem; }
+  .ambf-field--full { grid-column: 1 / -1; }
+
+  .ambf-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #6b4f4f;
+  }
+  .ambf-label abbr { text-decoration: none; color: #c9a09a; margin-left: 2px; }
+
+  .ambf-input, .ambf-textarea {
+    width: 100%;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.88rem;
+    color: #2a1f1f;
+    background: #fff;
+    border: 1px solid #d9c5c0;
+    border-radius: 2px;
+    padding: 0.65rem 0.75rem;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+  }
+  .ambf-input:focus, .ambf-textarea:focus { outline: none; border-color: #c9a09a; }
+  .ambf-textarea { resize: vertical; min-height: 100px; }
+  .ambf-help { font-size: 0.7rem; color: #9e7575; }
+
+  /* ── File upload ── */
+  .ambf-file-label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    padding: 0.65rem 0.75rem;
+    border: 1px dashed #d9c5c0;
+    border-radius: 2px;
+    background: #fdf6f0;
+    font-size: 0.82rem;
+    color: #9e7575;
+    transition: border-color 0.2s;
+  }
+  .ambf-file-label:hover { border-color: #c9a09a; }
+  .ambf-file-label input[type="file"] { display: none; }
+  .ambf-file-name { font-size: 0.75rem; color: #6b4f4f; }
+
+  /* ── Agreement ── */
+  .ambf-agreement { grid-column: 1 / -1; margin-top: 0.5rem; }
+  .ambf-agreement__heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0 0 0.75rem;
+    color: #1a1010;
+  }
+  .ambf-agreement__scroll {
+    height: 240px;
+    overflow-y: scroll;
+    border: 1px solid #d9c5c0;
+    border-radius: 2px;
+    padding: 1.25rem 1.5rem;
+    font-size: 0.82rem;
+    line-height: 1.75;
+    color: #4a3535;
+    background: #fdf6f0;
+    margin-bottom: 1rem;
+  }
+  .ambf-agreement__scroll p { margin: 0 0 0.75rem; }
+  .ambf-agreement__scroll p:last-child { margin-bottom: 0; }
+
+  .ambf-checkbox-row {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    margin-bottom: 1.25rem;
+  }
+  .ambf-checkbox-row input[type="checkbox"] {
+    margin-top: 3px;
+    accent-color: #c9a09a;
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+  .ambf-checkbox-row label { font-size: 0.82rem; line-height: 1.55; color: #4a3535; }
+
+  .ambf-sig-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+  @media (max-width: 500px) { .ambf-sig-grid { grid-template-columns: 1fr; } }
+
+  /* ── Error & submit ── */
+  .ambf-error {
+    display: none;
+    grid-column: 1 / -1;
+    background: #fdf0f0;
+    border: 1px solid #e8a0a0;
+    border-radius: 2px;
+    padding: 0.75rem 1rem;
+    font-size: 0.82rem;
+    color: #8b2020;
+    line-height: 1.5;
+  }
+  .ambf-error.is-visible { display: block; }
+
+  .ambf-submit-row {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  .ambf-submit {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #2a1a1a;
+    background: #f0d8d8;
+    border: none;
+    border-radius: 4px;
+    padding: 1rem 2.25rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .ambf-submit:hover { background: #e4c4c4; }
+  .ambf-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+  .ambf-submit-note { font-size: 0.7rem; color: #9e7575; }
+{%- endstyle -%}
+
+<div class="ambf-page">
+
+  <a class="ambf-back" href="/pages/ambassador">← Back to Ambassador Program</a>
+
+  <div class="ambf-header">
+    <p class="ambf-header__eyebrow">Pivot Dancewear</p>
+    <h1 class="ambf-header__title">Ambassador Application</h1>
+    <p class="ambf-header__sub">$35 non-refundable application fee &nbsp;·&nbsp; Fields marked * are required</p>
+  </div>
+
+  <form
+    class="ambf-form"
+    action="/cart/add"
+    method="post"
+    enctype="multipart/form-data"
+    novalidate
+  >
+    <input type="hidden" name="id" value="{{ section.settings.variant_id }}">
+    <input type="hidden" name="quantity" value="1">
+    <input type="hidden" name="return_to" value="/checkout">
+
+    <div class="ambf-field">
+      <label class="ambf-label" for="ambf-guardian-name">Parent / Guardian Name <abbr title="required">*</abbr></label>
+      <input class="ambf-input" type="text" id="ambf-guardian-name" name="properties[Parent/Guardian Name]" required autocomplete="name">
+    </div>
+
+    <div class="ambf-field">
+      <label class="ambf-label" for="ambf-guardian-email">Parent / Guardian Email <abbr title="required">*</abbr></label>
+      <input class="ambf-input" type="email" id="ambf-guardian-email" name="properties[Parent/Guardian Email]" required autocomplete="email">
+    </div>
+
+    <div class="ambf-field">
+      <label class="ambf-label" for="ambf-dancer-name">Dancer Name <abbr title="required">*</abbr></label>
+      <input class="ambf-input" type="text" id="ambf-dancer-name" name="properties[Dancer Name]" required>
+    </div>
+
+    <div class="ambf-field">
+      <label class="ambf-label" for="ambf-dancer-age">Dancer Age <abbr title="required">*</abbr></label>
+      <input class="ambf-input" type="number" id="ambf-dancer-age" name="properties[Dancer Age]" required min="1" max="25">
+    </div>
+
+    <div class="ambf-field">
+      <label class="ambf-label" for="ambf-city-state">City &amp; State</label>
+      <input class="ambf-input" type="text" id="ambf-city-state" name="properties[City & State]" placeholder="e.g. Austin, TX">
+    </div>
+
+    <div class="ambf-field">
+      <label class="ambf-label" for="ambf-instagram">Instagram Handle <abbr title="required">*</abbr></label>
+      <input class="ambf-input" type="text" id="ambf-instagram" name="properties[Instagram Handle]" required placeholder="@handle">
+    </div>
+
+    <div class="ambf-field">
+      <label class="ambf-label" for="ambf-tiktok">TikTok Handle</label>
+      <input class="ambf-input" type="text" id="ambf-tiktok" name="properties[TikTok Handle]" placeholder="@handle">
+    </div>
+
+    <div class="ambf-field">
+      <label class="ambf-label" for="ambf-followers">Approx. Follower Count</label>
+      <input class="ambf-input" type="text" id="ambf-followers" name="properties[Approx. Follower Count]" placeholder="e.g. 2,500">
+    </div>
+
+    <div class="ambf-field ambf-field--full">
+      <label class="ambf-label" for="ambf-video">Dance Video Link <abbr title="required">*</abbr></label>
+      <input class="ambf-input" type="url" id="ambf-video" name="properties[Dance Video Link]" required placeholder="https://…">
+      <span class="ambf-help">Paste a YouTube, Instagram, TikTok, or Google Drive link</span>
+    </div>
+
+    <div class="ambf-field ambf-field--full">
+      <label class="ambf-label" for="ambf-styles">Dance Styles</label>
+      <input class="ambf-input" type="text" id="ambf-styles" name="properties[Dance Styles]" placeholder="e.g. Contemporary, Jazz, Lyrical">
+    </div>
+
+    <div class="ambf-field ambf-field--full">
+      <label class="ambf-label" for="ambf-why">Why do you want to be a Pivot Ambassador? <abbr title="required">*</abbr></label>
+      <textarea class="ambf-textarea" id="ambf-why" name="properties[Why do you want to be a Pivot Ambassador?]" required rows="4"></textarea>
+    </div>
+
+    <div class="ambf-field ambf-field--full">
+      <label class="ambf-label" for="ambf-journey">Tell us about your dance journey <abbr title="required">*</abbr></label>
+      <textarea class="ambf-textarea" id="ambf-journey" name="properties[Tell us about your dance journey]" required rows="4"></textarea>
+    </div>
+
+    <div class="ambf-field ambf-field--full">
+      <span class="ambf-label">Headshot <abbr title="required">*</abbr></span>
+      <label class="ambf-file-label" for="ambf-headshot">
+        <input type="file" id="ambf-headshot" name="properties[Headshot]" accept="image/*" required>
+        <span>Choose a photo (JPG, PNG — max 20 MB)</span>
+      </label>
+      <span class="ambf-file-name" id="ambf-selected-file"></span>
+      <span class="ambf-help">Max file size: 20 MB</span>
+    </div>
+
+    <div class="ambf-field ambf-field--full ambf-agreement">
+      <h3 class="ambf-agreement__heading">Ambassador Agreement</h3>
+      <div class="ambf-agreement__scroll">
+        {%- render 'ambassador-agreement' -%}
+      </div>
+      <div class="ambf-checkbox-row">
+        <input type="checkbox" id="ambf-agree-check"
+          name="properties[Agreement Accepted]"
+          value="Yes — I have read and agree to the Pivot Ambassador Agreement"
+          required>
+        <label for="ambf-agree-check">I have read the full Pivot Ambassador Agreement above and agree to its terms on behalf of myself and my dancer.</label>
+      </div>
+      <div class="ambf-sig-grid">
+        <div class="ambf-field">
+          <label class="ambf-label" for="ambf-signature">Signature — Parent/Guardian full name <abbr title="required">*</abbr></label>
+          <input class="ambf-input" type="text" id="ambf-signature" name="properties[Signature (Parent/Guardian full name)]" required placeholder="Type your full legal name">
+        </div>
+        <div class="ambf-field">
+          <label class="ambf-label" for="ambf-sig-date">Date</label>
+          <input class="ambf-input" type="text" id="ambf-sig-date" name="properties[Signature Date]" readonly>
+        </div>
+      </div>
+    </div>
+
+    <div class="ambf-error" id="ambf-error" role="alert"></div>
+
+    <div class="ambf-submit-row">
+      <button type="submit" class="ambf-submit" id="ambf-submit">Submit application &amp; pay $35 →</button>
+      <span class="ambf-submit-note">You'll be taken to Shopify checkout to complete your $35 payment.</span>
+    </div>
+
+  </form>
+</div>
+
+<script>
+(function () {
+  const dateField = document.getElementById('ambf-sig-date');
+  if (dateField) {
+    dateField.value = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  }
+
+  const fileInput = document.getElementById('ambf-headshot');
+  const fileDisplay = document.getElementById('ambf-selected-file');
+  if (fileInput && fileDisplay) {
+    fileInput.addEventListener('change', function () {
+      const f = this.files[0];
+      fileDisplay.textContent = f ? f.name + ' (' + (f.size / 1024 / 1024).toFixed(1) + ' MB)' : '';
+    });
+  }
+
+  const form = document.querySelector('.ambf-form');
+  const errorBanner = document.getElementById('ambf-error');
+  const submitBtn = document.getElementById('ambf-submit');
+  if (!form) return;
+
+  form.addEventListener('submit', function (e) {
+    const errors = [];
+
+    form.querySelectorAll('[required]:not([type="checkbox"]):not([type="file"])').forEach(function (field) {
+      if (!field.value.trim()) {
+        const label = form.querySelector('label[for="' + field.id + '"]');
+        errors.push('"' + (label ? label.textContent.replace('*', '').trim() : field.name) + '" is required.');
+      }
+    });
+
+    const video = document.getElementById('ambf-video');
+    if (video && video.value.trim()) {
+      try { new URL(video.value.trim()); } catch (_) {
+        errors.push('Dance Video Link must be a valid URL.');
+      }
+    }
+
+    const headshot = fileInput ? fileInput.files[0] : null;
+    if (!headshot) {
+      errors.push('A headshot photo is required.');
+    } else if (headshot.size > 20 * 1024 * 1024) {
+      errors.push('Headshot must be under 20 MB (yours is ' + (headshot.size / 1024 / 1024).toFixed(1) + ' MB).');
+    }
+
+    const checkbox = document.getElementById('ambf-agree-check');
+    if (checkbox && !checkbox.checked) errors.push('You must accept the Ambassador Agreement.');
+
+    if (errors.length) {
+      e.preventDefault();
+      errorBanner.innerHTML = '<strong>Please fix the following:</strong><ul style="margin:.5rem 0 0 1.25rem;padding:0">' +
+        errors.map(function (err) { return '<li>' + err + '</li>'; }).join('') + '</ul>';
+      errorBanner.classList.add('is-visible');
+      errorBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    } else {
+      errorBanner.classList.remove('is-visible');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Submitting…';
+    }
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Ambassador Form",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "variant_id",
+      "label": "Ambassador Application Variant ID",
+      "default": "53608488534325",
+      "info": "The variant ID of your $35 'Ambassador Application' product."
+    }
+  ],
+  "presets": [
+    { "name": "Ambassador Form" }
+  ]
+}
+{% endschema %}

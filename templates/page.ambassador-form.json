@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "ambassador_form": {
+      "type": "ambassador-form",
+      "settings": {
+        "variant_id": "53608488534325"
+      }
+    }
+  },
+  "order": ["ambassador_form"]
+}
