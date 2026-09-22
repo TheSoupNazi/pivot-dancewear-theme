@@ -203,82 +203,85 @@
     <p class="ambf-header__sub">$35 non-refundable application fee &nbsp;·&nbsp; Fields marked * are required</p>
   </div>
 
+  {%- assign form_action = section.settings.form_action_url | default: '' -%}
+  {%- if form_action == blank -%}
+    <div style="background:#fff3cd;border:1px solid #ffc107;border-radius:4px;padding:1rem 1.25rem;margin-bottom:1.5rem;font-size:0.9rem;color:#856404;">
+      <strong>Setup needed:</strong> Enter the Ambassador App URL in <em>Theme Editor → Ambassador Form → App Submission URL</em> before this form goes live.
+    </div>
+  {%- endif -%}
+
   <form
     class="ambf-form"
-    action="/cart/add"
+    action="{{ form_action }}/apply"
     method="post"
     enctype="multipart/form-data"
     novalidate
   >
-    <input type="hidden" name="id" value="{{ section.settings.variant_id }}">
-    <input type="hidden" name="quantity" value="1">
-    <input type="hidden" name="return_to" value="/checkout">
-
     <div class="ambf-field">
       <label class="ambf-label" for="ambf-guardian-name">Parent / Guardian Name <abbr title="required">*</abbr></label>
-      <input class="ambf-input" type="text" id="ambf-guardian-name" name="properties[Parent/Guardian Name]" required autocomplete="name">
+      <input class="ambf-input" type="text" id="ambf-guardian-name" name="guardian_name" required autocomplete="name">
     </div>
 
     <div class="ambf-field">
       <label class="ambf-label" for="ambf-guardian-email">Parent / Guardian Email <abbr title="required">*</abbr></label>
-      <input class="ambf-input" type="email" id="ambf-guardian-email" name="properties[Parent/Guardian Email]" required autocomplete="email">
+      <input class="ambf-input" type="email" id="ambf-guardian-email" name="guardian_email" required autocomplete="email">
     </div>
 
     <div class="ambf-field">
       <label class="ambf-label" for="ambf-dancer-name">Dancer Name <abbr title="required">*</abbr></label>
-      <input class="ambf-input" type="text" id="ambf-dancer-name" name="properties[Dancer Name]" required>
+      <input class="ambf-input" type="text" id="ambf-dancer-name" name="dancer_name" required>
     </div>
 
     <div class="ambf-field">
       <label class="ambf-label" for="ambf-dancer-age">Dancer Age <abbr title="required">*</abbr></label>
-      <input class="ambf-input" type="number" id="ambf-dancer-age" name="properties[Dancer Age]" required min="1" max="25">
+      <input class="ambf-input" type="number" id="ambf-dancer-age" name="dancer_age" required min="1" max="25">
     </div>
 
     <div class="ambf-field">
       <label class="ambf-label" for="ambf-city-state">City &amp; State</label>
-      <input class="ambf-input" type="text" id="ambf-city-state" name="properties[City & State]" placeholder="e.g. Austin, TX">
+      <input class="ambf-input" type="text" id="ambf-city-state" name="city_state" placeholder="e.g. Austin, TX">
     </div>
 
     <div class="ambf-field">
       <label class="ambf-label" for="ambf-instagram">Instagram Handle <abbr title="required">*</abbr></label>
-      <input class="ambf-input" type="text" id="ambf-instagram" name="properties[Instagram Handle]" required placeholder="@handle">
+      <input class="ambf-input" type="text" id="ambf-instagram" name="instagram" required placeholder="@handle">
     </div>
 
     <div class="ambf-field">
       <label class="ambf-label" for="ambf-tiktok">TikTok Handle</label>
-      <input class="ambf-input" type="text" id="ambf-tiktok" name="properties[TikTok Handle]" placeholder="@handle">
+      <input class="ambf-input" type="text" id="ambf-tiktok" name="tiktok" placeholder="@handle">
     </div>
 
     <div class="ambf-field">
       <label class="ambf-label" for="ambf-followers">Approx. Follower Count</label>
-      <input class="ambf-input" type="text" id="ambf-followers" name="properties[Approx. Follower Count]" placeholder="e.g. 2,500">
+      <input class="ambf-input" type="text" id="ambf-followers" name="follower_count" placeholder="e.g. 2,500">
     </div>
 
     <div class="ambf-field ambf-field--full">
       <label class="ambf-label" for="ambf-video">Dance Video Link <abbr title="required">*</abbr></label>
-      <input class="ambf-input" type="url" id="ambf-video" name="properties[Dance Video Link]" required placeholder="https://…">
+      <input class="ambf-input" type="url" id="ambf-video" name="video_link" required placeholder="https://…">
       <span class="ambf-help">Paste a YouTube, Instagram, TikTok, or Google Drive link</span>
     </div>
 
     <div class="ambf-field ambf-field--full">
       <label class="ambf-label" for="ambf-styles">Dance Styles</label>
-      <input class="ambf-input" type="text" id="ambf-styles" name="properties[Dance Styles]" placeholder="e.g. Contemporary, Jazz, Lyrical">
+      <input class="ambf-input" type="text" id="ambf-styles" name="dance_styles" placeholder="e.g. Contemporary, Jazz, Lyrical">
     </div>
 
     <div class="ambf-field ambf-field--full">
       <label class="ambf-label" for="ambf-why">Why do you want to be a Pivot Ambassador? <abbr title="required">*</abbr></label>
-      <textarea class="ambf-textarea" id="ambf-why" name="properties[Why do you want to be a Pivot Ambassador?]" required rows="4"></textarea>
+      <textarea class="ambf-textarea" id="ambf-why" name="why_ambassador" required rows="4"></textarea>
     </div>
 
     <div class="ambf-field ambf-field--full">
       <label class="ambf-label" for="ambf-journey">Tell us about your dance journey <abbr title="required">*</abbr></label>
-      <textarea class="ambf-textarea" id="ambf-journey" name="properties[Tell us about your dance journey]" required rows="4"></textarea>
+      <textarea class="ambf-textarea" id="ambf-journey" name="dance_journey" required rows="4"></textarea>
     </div>
 
     <div class="ambf-field ambf-field--full">
       <span class="ambf-label">Headshot <abbr title="required">*</abbr></span>
       <label class="ambf-file-label" for="ambf-headshot">
-        <input type="file" id="ambf-headshot" name="properties[Headshot]" accept="image/*" required>
+        <input type="file" id="ambf-headshot" name="headshot" accept="image/*" required>
         <span>Choose a photo (JPG, PNG — max 20 MB)</span>
       </label>
       <span class="ambf-file-name" id="ambf-selected-file"></span>
@@ -292,19 +295,19 @@
       </div>
       <div class="ambf-checkbox-row">
         <input type="checkbox" id="ambf-agree-check"
-          name="properties[Agreement Accepted]"
-          value="Yes — I have read and agree to the Pivot Ambassador Agreement"
+          name="agreement_accepted"
+          value="yes"
           required>
         <label for="ambf-agree-check">I have read the full Pivot Ambassador Agreement above and agree to its terms on behalf of myself and my dancer.</label>
       </div>
       <div class="ambf-sig-grid">
         <div class="ambf-field">
           <label class="ambf-label" for="ambf-signature">Signature — Parent/Guardian full name <abbr title="required">*</abbr></label>
-          <input class="ambf-input" type="text" id="ambf-signature" name="properties[Signature (Parent/Guardian full name)]" required placeholder="Type your full legal name">
+          <input class="ambf-input" type="text" id="ambf-signature" name="signature" required placeholder="Type your full legal name">
         </div>
         <div class="ambf-field">
           <label class="ambf-label" for="ambf-sig-date">Date</label>
-          <input class="ambf-input" type="text" id="ambf-sig-date" name="properties[Signature Date]" readonly>
+          <input class="ambf-input" type="text" id="ambf-sig-date" name="signature_date" readonly>
         </div>
       </div>
     </div>
@@ -389,10 +392,10 @@
   "settings": [
     {
       "type": "text",
-      "id": "variant_id",
-      "label": "Ambassador Application Variant ID",
-      "default": "53608488534325",
-      "info": "The variant ID of your $35 'Ambassador Application' product."
+      "id": "form_action_url",
+      "label": "App Submission URL",
+      "placeholder": "https://ambassador.pivotdancewear.com",
+      "info": "The base URL of your Pivot Ambassador App (from Cloudflare Tunnel setup). Do not include a trailing slash."
     }
   ],
   "presets": [
