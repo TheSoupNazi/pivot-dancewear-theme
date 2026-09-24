@@ -1,3 +1,21 @@
+{%- liquid
+  assign apps_open = false
+  assign open_v = shop.metafields.custom.application_open.value
+  assign close_v = shop.metafields.custom.application_close.value
+  if open_v != blank and close_v != blank
+    assign now_ts = 'now' | date: '%s' | plus: 0
+    assign open_ts = open_v | date: '%s' | plus: 0
+    assign close_ts = close_v | date: '%s' | plus: 0
+    if now_ts >= open_ts and now_ts <= close_ts
+      assign apps_open = true
+    endif
+  endif
+  if request.design_mode
+    assign apps_open = true
+  endif
+-%}
+{%- comment -%} APPLICATION WINDOW GATE — dates come from shop metafields custom.application_open / custom.application_close, set by the Pivot Ambassador app (Admin → Settings). Blank = closed. {%- endcomment -%}
+{%- if apps_open -%}
 {%- comment -%}
   SETUP:
   1. Create a product "Ambassador Application" priced at $35. Copy its variant ID.
@@ -587,6 +605,21 @@
 
 </div>
 
+{%- else -%}
+<section style="background:#fdf8f5;padding:80px 20px;text-align:center;">
+  <div style="max-width:520px;margin:0 auto;background:#fff;border-radius:16px;padding:48px 32px;box-shadow:0 4px 24px rgba(0,0,0,.06);">
+    <p style="font-family:'Cormorant Garamond',Georgia,serif;letter-spacing:.4em;text-transform:uppercase;color:#9e7575;margin:0 0 6px;">Pivot</p>
+    <p style="color:#c97a8e;font-size:18px;margin:0 0 4px;">&#9825;</p>
+    <p style="font-size:10px;font-weight:700;letter-spacing:.5em;text-transform:uppercase;color:#5a3a3a;margin:0 0 32px;">Dancewear</p>
+    <h1 style="font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;font-size:32px;color:#1a1010;margin:0 0 16px;">Ambassador applications are closed</h1>
+    <p style="color:#6b4f4f;line-height:1.8;font-size:15px;margin:0;">
+      Thank you for your interest in the Pivot Ambassador Program.
+      {%- if open_v != blank and now_ts < open_ts %} Our next search opens on <strong>{{ open_v | date: '%B %-d, %Y' }}</strong>.{% endif %}
+      <br><br>Questions? Email <a href="mailto:hello@pivotdancewear.com" style="color:#c97a8e;text-decoration:none;">hello@pivotdancewear.com</a>.
+    </p>
+  </div>
+</section>
+{%- endif -%}
 {% schema %}
 {
   "name": "Ambassador Application",
