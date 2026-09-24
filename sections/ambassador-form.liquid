@@ -293,29 +293,6 @@
       <span class="ambf-help">Max file size: 20 MB</span>
     </div>
 
-    <div class="ambf-field ambf-field--full ambf-agreement">
-      <h3 class="ambf-agreement__heading">Ambassador Agreement</h3>
-      <div class="ambf-agreement__scroll">
-        {%- render 'ambassador-agreement' -%}
-      </div>
-      <div class="ambf-checkbox-row">
-        <input type="checkbox" id="ambf-agree-check"
-          name="agreement_accepted"
-          value="yes"
-          required>
-        <label for="ambf-agree-check">I have read the full Pivot Ambassador Agreement above and agree to its terms on behalf of myself and my dancer.</label>
-      </div>
-      <div class="ambf-sig-grid">
-        <div class="ambf-field">
-          <label class="ambf-label" for="ambf-signature">Signature — Parent/Guardian full name <abbr title="required">*</abbr></label>
-          <input class="ambf-input" type="text" id="ambf-signature" name="signature" required placeholder="Type your full legal name">
-        </div>
-        <div class="ambf-field">
-          <label class="ambf-label" for="ambf-sig-date">Date</label>
-          <input class="ambf-input" type="text" id="ambf-sig-date" name="signature_date" readonly>
-        </div>
-      </div>
-    </div>
 
     <div class="ambf-error" id="ambf-error" role="alert"></div>
 
@@ -329,11 +306,6 @@
 
 <script>
 (function () {
-  const dateField = document.getElementById('ambf-sig-date');
-  if (dateField) {
-    dateField.value = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-  }
-
   const fileInput = document.getElementById('ambf-headshot');
   const fileDisplay = document.getElementById('ambf-selected-file');
   if (fileInput && fileDisplay) {
@@ -372,8 +344,6 @@
       errors.push('Headshot must be under 20 MB (yours is ' + (headshot.size / 1024 / 1024).toFixed(1) + ' MB).');
     }
 
-    const checkbox = document.getElementById('ambf-agree-check');
-    if (checkbox && !checkbox.checked) errors.push('You must accept the Ambassador Agreement.');
 
     if (errors.length) {
       e.preventDefault();
