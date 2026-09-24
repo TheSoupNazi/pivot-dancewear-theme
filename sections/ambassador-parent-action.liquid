@@ -1,0 +1,131 @@
+{%- comment -%}
+  Parent-facing action page (agreement signing / waitlist confirmation).
+  Lives on the store's own domain and talks to the Pivot Ambassador app in the background,
+  so parents never see the app's tunnel address. NOT gated by the application window.
+{%- endcomment -%}
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@400;500;600;700&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+<meta name="robots" content="noindex,nofollow">
+<style>
+  #amb-pa { background:#f5eded; padding:48px 16px 72px; font-family:'Montserrat',sans-serif; color:#2a1a1a; }
+  #amb-pa .pa-wrap { max-width:720px; margin:0 auto; }
+  #amb-pa .pa-logo { text-align:center; margin-bottom:24px; }
+  #amb-pa .pa-logo b { display:block; font-family:'Cormorant Garamond',serif; font-weight:400; font-size:24px; letter-spacing:.5em; text-transform:uppercase; }
+  #amb-pa .pa-logo i { display:block; font-style:normal; color:#c97a8e; font-size:16px; line-height:1.6; }
+  #amb-pa .pa-logo span { font-size:10px; font-weight:700; letter-spacing:.5em; text-transform:uppercase; color:#7a4a55; }
+  #amb-pa .pa-rule { height:3px; background:#f0d8d8; border-radius:2px; margin:0 auto 24px; }
+  #amb-pa .pa-card { background:#fff; border-radius:12px; padding:32px 40px; box-shadow:0 2px 16px rgba(0,0,0,.07); }
+  #amb-pa h1 { font-family:'Cormorant Garamond',serif; font-weight:400; font-size:30px; margin:0 0 4px; line-height:1.25; }
+  #amb-pa .pa-sub { font-size:13px; color:#9e7575; letter-spacing:.04em; margin:0 0 20px; }
+  #amb-pa p { font-size:15px; line-height:1.8; color:#6b4f4f; margin:0 0 14px; }
+  #amb-pa .pa-center { text-align:center; }
+  #amb-pa .pa-icon { font-size:36px; margin-bottom:12px; display:block; }
+  #amb-pa .pa-sig { font-family:'Dancing Script',cursive; font-size:32px; color:#2a1a1a; margin-top:20px; }
+  #amb-pa .pa-sig em { font-style:normal; color:#c97a8e; font-family:'Montserrat',sans-serif; font-size:16px; }
+  #amb-pa .pa-scroll { max-height:340px; overflow-y:auto; border:1px solid #e8d8d3; background:#faf5f1; border-radius:8px; padding:20px 24px; margin-bottom:20px; }
+  #amb-pa .pa-scroll p { color:#2a1a1a; font-size:14px; line-height:1.75; }
+  #amb-pa .pa-check { display:flex; gap:12px; align-items:flex-start; margin-bottom:20px; }
+  #amb-pa .pa-check input { margin-top:4px; accent-color:#c97a8e; width:18px; height:18px; flex-shrink:0; }
+  #amb-pa .pa-check label { font-size:14px; line-height:1.6; color:#4a3535; }
+  #amb-pa .pa-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; align-items:end; margin-bottom:24px; }
+  @media (max-width:560px){ #amb-pa .pa-grid { grid-template-columns:1fr; } #amb-pa .pa-card { padding:24px 20px; } }
+  #amb-pa .pa-f label { display:block; font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:#9e7575; margin-bottom:6px; }
+  #amb-pa .pa-f input { width:100%; box-sizing:border-box; padding:12px 14px; border:1px solid #d9c5c0; border-radius:6px; font-family:'Montserrat',sans-serif; font-size:15px; color:#2a1a1a; background:#fff; }
+  #amb-pa .pa-f input[readonly] { background:#fdf8f5; color:#9e7575; }
+  #amb-pa .pa-btn { width:100%; padding:16px; border:0; border-radius:6px; background:#f0d8d8; color:#2a1a1a; font-family:'Montserrat',sans-serif; font-size:12px; font-weight:700; letter-spacing:.2em; text-transform:uppercase; cursor:pointer; }
+  #amb-pa .pa-btn:disabled { opacity:.6; cursor:default; }
+  #amb-pa .pa-err { color:#c62828; font-size:13px; margin:0 0 14px; }
+  #amb-pa .pa-spin { text-align:center; color:#9e7575; padding:24px 0; font-size:14px; }
+</style>
+
+<div id="amb-pa" data-mode="{{ section.settings.mode }}" data-api="{{ section.settings.api_base | escape }}">
+  <div class="pa-wrap">
+    <div class="pa-logo"><b>Pivot</b><i>&#9825;</i><span>Dancewear</span></div>
+    <div class="pa-rule"></div>
+    <div class="pa-card" id="pa-card"><div class="pa-spin">Loading&hellip;</div></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var root = document.getElementById('amb-pa'), card = document.getElementById('pa-card');
+  var mode = root.getAttribute('data-mode'), api = root.getAttribute('data-api').replace(/\/$/, '');
+  var token = new URLSearchParams(location.search).get('t') || '';
+  var HDR = { 'ngrok-skip-browser-warning': '1' };
+  var JHDR = { 'ngrok-skip-browser-warning': '1', 'Content-Type': 'application/json' };
+  var url = api + '/api/parent/' + (mode === 'agreement' ? 'agreement' : 'confirm') + '/' + encodeURIComponent(token);
+
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function view(icon, title, lines, signed) {
+    card.innerHTML = ''; card.className = 'pa-card pa-center';
+    if (icon) card.appendChild(el('span', 'pa-icon', icon));
+    card.appendChild(el('h1', '', title));
+    lines.forEach(function (l) { card.appendChild(el('p', '', l)); });
+    if (signed) { var s = el('div', 'pa-sig', 'Jess '); s.appendChild(el('em', '', '♥')); card.appendChild(s); }
+  }
+  function unavailable() { view('🩰', 'Temporarily unavailable', ['We couldn’t reach our system just now. Please try this link again in a few minutes.', 'Questions? Email hello@pivotdancewear.com.']); }
+  function invalid() { view('🩰', 'Link not found', ['This link is invalid or has expired.', 'Questions? Email hello@pivotdancewear.com.']); }
+  function getJSON(u, opts) { return fetch(u, opts).then(function (r) { return r.json(); }); }
+
+  if (!token) { invalid(); return; }
+
+  if (mode === 'waitlist') {
+    getJSON(url, { headers: HDR }).then(function (d) {
+      if (d.status === 'invalid') return invalid();
+      return getJSON(url, { method: 'POST', headers: JHDR, body: '{}' }).then(function (c) {
+        if (c.status !== 'confirmed') return invalid();
+        view('🎀', c.already ? 'You’re already on the list!' : 'You’re on the waitlist!',
+          [c.already ? c.dancer + ' is already confirmed on our waitlist. We’ll be in touch if a spot opens up.'
+                     : 'Thank you for confirming — ' + c.dancer + ' is officially on Pivot’s ambassador waitlist. If a spot opens up, you’ll be the first we reach out to.'], true);
+      });
+    }).catch(unavailable);
+    return;
+  }
+
+  function done(dancer, already) {
+    view('🎀', already ? 'Already signed' : 'Agreement signed!',
+      [already ? 'The Ambassador Agreement for ' + dancer + ' has already been signed and is on file.'
+               : 'Thank you — the Ambassador Agreement for ' + dancer + ' is now on file. Welcome to the Pivot family!'], !already);
+  }
+  getJSON(url, { headers: HDR }).then(function (d) {
+    if (d.status === 'invalid') return invalid();
+    if (d.status === 'signed') return done(d.dancer, true);
+    card.className = 'pa-card'; card.innerHTML = '';
+    card.appendChild(el('h1', '', 'Ambassador Agreement'));
+    card.appendChild(el('p', 'pa-sub', 'For ' + d.dancer + ' — please read in full before signing'));
+    var box = el('div', 'pa-scroll'); box.innerHTML = d.agreementHtml; card.appendChild(box);
+    var chk = el('div', 'pa-check'); var cb = el('input'); cb.type = 'checkbox'; cb.id = 'pa-agree';
+    var cl = el('label', '', 'I have read the full Pivot Dancewear Ambassador Agreement above and agree to its terms on behalf of myself and ' + d.dancer + '.'); cl.setAttribute('for', 'pa-agree');
+    chk.appendChild(cb); chk.appendChild(cl); card.appendChild(chk);
+    var grid = el('div', 'pa-grid');
+    var f1 = el('div', 'pa-f'); var l1 = el('label', '', 'Parent/Guardian Signature *'); l1.setAttribute('for', 'pa-sig');
+    var sig = el('input'); sig.type = 'text'; sig.id = 'pa-sig'; sig.placeholder = 'Type your full legal name'; sig.autocomplete = 'name'; f1.appendChild(l1); f1.appendChild(sig);
+    var f2 = el('div', 'pa-f'); var l2 = el('label', '', 'Date'); var dt = el('input'); dt.type = 'text'; dt.readOnly = true; dt.value = d.today; dt.setAttribute('aria-label', 'Date'); f2.appendChild(l2); f2.appendChild(dt);
+    grid.appendChild(f1); grid.appendChild(f2); card.appendChild(grid);
+    var err = el('p', 'pa-err'); err.style.display = 'none'; card.appendChild(err);
+    var btn = el('button', 'pa-btn', 'Sign Agreement →'); btn.type = 'button'; card.appendChild(btn);
+    btn.addEventListener('click', function () {
+      err.style.display = 'none';
+      if (!cb.checked || !sig.value.trim()) { err.textContent = 'Please check the box and type your full name.'; err.style.display = 'block'; return; }
+      btn.disabled = true; btn.textContent = 'Signing…';
+      getJSON(url, { method: 'POST', headers: JHDR, body: JSON.stringify({ signature: sig.value.trim(), agree: true }) }).then(function (r) {
+        if (r.status === 'signed') return done(r.dancer, !r.justSigned);
+        if (r.status === 'invalid') return invalid();
+        err.textContent = r.message || 'Something went wrong. Please try again.'; err.style.display = 'block'; btn.disabled = false; btn.textContent = 'Sign Agreement →';
+      }).catch(function () { err.textContent = 'We couldn’t reach our system. Please try again in a few minutes.'; err.style.display = 'block'; btn.disabled = false; btn.textContent = 'Sign Agreement →'; });
+    });
+  }).catch(unavailable);
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Ambassador parent action",
+  "settings": [
+    { "type": "select", "id": "mode", "label": "Page type", "default": "agreement",
+      "options": [ { "value": "agreement", "label": "Sign agreement" }, { "value": "waitlist", "label": "Confirm waitlist" } ] },
+    { "type": "text", "id": "api_base", "label": "Ambassador app address", "default": "https://dweeb-juvenile-isotope.ngrok-free.dev",
+      "info": "Only change this if the app's address changes." }
+  ],
+  "presets": [ { "name": "Ambassador parent action" } ]
+}
+{% endschema %}
