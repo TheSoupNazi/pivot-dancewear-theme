@@ -52,7 +52,7 @@
   var token = new URLSearchParams(location.search).get('t') || '';
   var HDR = { 'ngrok-skip-browser-warning': '1' };
   var JHDR = { 'ngrok-skip-browser-warning': '1', 'Content-Type': 'application/json' };
-  var PATHS = { agreement: 'agreement', waitlist: 'confirm', pay: 'pay', withdraw: 'withdraw' };
+  var PATHS = { agreement: 'agreement', waitlist: 'confirm', pay: 'pay', withdraw: 'withdraw', photo: 'photo' };
   var url = api + '/api/parent/' + PATHS[mode] + '/' + encodeURIComponent(token);
 
   function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
@@ -117,6 +117,32 @@
     return;
   }
 
+
+  if (mode === 'photo') {
+    getJSON(url, { headers: HDR }).then(function (d) {
+      if (d.status === 'invalid') return invalid();
+      card.className = 'pa-card pa-center'; card.innerHTML = '';
+      card.appendChild(el('h1', '', 'Upload ' + d.dancer + '\u2019s photo'));
+      card.appendChild(el('p', '', 'Please choose a clear photo of ' + d.dancer + ' \u2014 a photo from your phone works great (JPG, PNG or HEIC).'));
+      var input = el('input'); input.type = 'file'; input.accept = 'image/*'; input.style.cssText = 'display:block;margin:0 auto 16px;max-width:100%;font-family:inherit;font-size:14px;';
+      var err = el('p', 'pa-err'); err.style.display = 'none';
+      var btn = el('button', 'pa-btn', 'Upload photo'); btn.type = 'button';
+      card.appendChild(input); card.appendChild(err); card.appendChild(btn);
+      btn.addEventListener('click', function () {
+        err.style.display = 'none';
+        if (!input.files || !input.files[0]) { err.textContent = 'Please choose a photo first.'; err.style.display = 'block'; return; }
+        var fd = new FormData(); fd.append('headshot', input.files[0]);
+        btn.disabled = true; btn.textContent = 'Uploading\u2026';
+        fetch(url, { method: 'POST', headers: HDR, body: fd }).then(function (r) { return r.json(); }).then(function (r) {
+          if (r.status === 'saved') return view('\uD83C\uDF80', 'Thank you!', ['We\u2019ve got ' + r.dancer + '\u2019s photo. You\u2019re all set!'], true);
+          if (r.status === 'invalid') return invalid();
+          btn.disabled = false; btn.textContent = 'Upload photo'; err.textContent = r.message || 'Something went wrong. Please try again.'; err.style.display = 'block';
+        }).catch(function () { btn.disabled = false; btn.textContent = 'Upload photo'; err.textContent = 'We couldn\u2019t reach our system. Please try again in a few minutes.'; err.style.display = 'block'; });
+      });
+    }).catch(unavailable);
+    return;
+  }
+
   function done(dancer, already) {
     view('🎀', already ? 'Already signed' : 'Agreement signed!',
       [already ? 'The Ambassador Agreement for ' + dancer + ' has already been signed and is on file.'
@@ -158,7 +184,7 @@
   "name": "Ambassador parent action",
   "settings": [
     { "type": "select", "id": "mode", "label": "Page type", "default": "agreement",
-      "options": [ { "value": "agreement", "label": "Sign agreement" }, { "value": "waitlist", "label": "Confirm waitlist" }, { "value": "pay", "label": "Finish paying (reminder link)" }, { "value": "withdraw", "label": "Withdraw application" } ] },
+      "options": [ { "value": "agreement", "label": "Sign agreement" }, { "value": "waitlist", "label": "Confirm waitlist" }, { "value": "pay", "label": "Finish paying (reminder link)" }, { "value": "withdraw", "label": "Withdraw application" }, { "value": "photo", "label": "Upload a new photo" } ] },
     { "type": "text", "id": "api_base", "label": "Ambassador app address", "default": "https://dweeb-juvenile-isotope.ngrok-free.dev",
       "info": "Only change this if the app's address changes." }
   ],
