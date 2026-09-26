@@ -52,7 +52,8 @@
   var token = new URLSearchParams(location.search).get('t') || '';
   var HDR = { 'ngrok-skip-browser-warning': '1' };
   var JHDR = { 'ngrok-skip-browser-warning': '1', 'Content-Type': 'application/json' };
-  var url = api + '/api/parent/' + (mode === 'agreement' ? 'agreement' : 'confirm') + '/' + encodeURIComponent(token);
+  var PATHS = { agreement: 'agreement', waitlist: 'confirm', pay: 'pay', withdraw: 'withdraw' };
+  var url = api + '/api/parent/' + PATHS[mode] + '/' + encodeURIComponent(token);
 
   function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
   function view(icon, title, lines, signed) {
@@ -76,6 +77,41 @@
         view('🎀', c.already ? 'You’re already on the list!' : 'You’re on the waitlist!',
           [c.already ? c.dancer + ' is already confirmed on our waitlist. We’ll be in touch if a spot opens up.'
                      : 'Thank you for confirming — ' + c.dancer + ' is officially on Pivot’s ambassador waitlist. If a spot opens up, you’ll be the first we reach out to.'], true);
+      });
+    }).catch(unavailable);
+    return;
+  }
+
+
+  if (mode === 'pay') {
+    getJSON(url, { headers: HDR }).then(function (d) {
+      if (d.status === 'invalid') return invalid();
+      if (d.status === 'paid') return view('\uD83C\uDF80', 'You\u2019re all set!', ['We\u2019ve received the application fee for ' + d.dancer + '. Thank you!'], true);
+      if (d.status === 'closed') return view('\uD83E\uDE70', 'Applications are closed', [d.message || 'Applications are closed right now.', 'Questions? Email hello@pivotdancewear.com.']);
+      view('\uD83C\uDF80', 'Taking you to checkout\u2026', ['One moment while we get ' + d.dancer + '\u2019s application ready.']);
+      window.location.replace(d.checkoutUrl);
+    }).catch(unavailable);
+    return;
+  }
+
+  if (mode === 'withdraw') {
+    getJSON(url, { headers: HDR }).then(function (d) {
+      if (d.status === 'invalid') return view('\uD83E\uDE70', 'Already removed', ['This application has already been withdrawn, or the link is no longer valid.', 'Questions? Email hello@pivotdancewear.com.']);
+      card.className = 'pa-card pa-center'; card.innerHTML = '';
+      card.appendChild(el('h1', '', 'Withdraw ' + d.dancer + '\u2019s application?'));
+      card.appendChild(el('p', '', 'This will permanently delete everything we saved about ' + d.dancer + ' \u2014 the application answers, the photo, and any signed agreement \u2014 and remove ' + d.dancer + ' from consideration. This can\u2019t be undone.'));
+      if (d.paid) card.appendChild(el('p', '', 'Please note the application fee is non-refundable, and your payment record stays with our store.'));
+      var err = el('p', 'pa-err'); err.style.display = 'none';
+      var yes = el('button', 'pa-btn', 'Yes, delete and withdraw'); yes.type = 'button'; yes.style.cssText = 'background:#2a1a1a;color:#f0d8d8;margin-bottom:10px;';
+      var no = el('button', 'pa-btn', 'No, keep the application'); no.type = 'button';
+      card.appendChild(err); card.appendChild(yes); card.appendChild(no);
+      no.addEventListener('click', function () { view('\uD83C\uDF80', 'Thanks \u2014 nothing was changed', ['The application for ' + d.dancer + ' is still in.']); });
+      yes.addEventListener('click', function () {
+        yes.disabled = true; yes.textContent = 'Deleting\u2026'; err.style.display = 'none';
+        getJSON(url, { method: 'POST', headers: JHDR, body: '{}' }).then(function (r) {
+          if (r.status === 'deleted') return view('\uD83E\uDE70', 'Application withdrawn', ['We\u2019ve permanently deleted everything we saved about ' + r.dancer + '. A confirmation is on its way to your inbox.', 'Thank you for your interest in Pivot.']);
+          yes.disabled = false; yes.textContent = 'Yes, delete and withdraw'; err.textContent = r.message || 'Something went wrong. Please email hello@pivotdancewear.com and we will remove it for you.'; err.style.display = 'block';
+        }).catch(function () { yes.disabled = false; yes.textContent = 'Yes, delete and withdraw'; err.textContent = 'We couldn\u2019t reach our system. Please try again in a few minutes.'; err.style.display = 'block'; });
       });
     }).catch(unavailable);
     return;
@@ -122,7 +158,7 @@
   "name": "Ambassador parent action",
   "settings": [
     { "type": "select", "id": "mode", "label": "Page type", "default": "agreement",
-      "options": [ { "value": "agreement", "label": "Sign agreement" }, { "value": "waitlist", "label": "Confirm waitlist" } ] },
+      "options": [ { "value": "agreement", "label": "Sign agreement" }, { "value": "waitlist", "label": "Confirm waitlist" }, { "value": "pay", "label": "Finish paying (reminder link)" }, { "value": "withdraw", "label": "Withdraw application" } ] },
     { "type": "text", "id": "api_base", "label": "Ambassador app address", "default": "https://dweeb-juvenile-isotope.ngrok-free.dev",
       "info": "Only change this if the app's address changes." }
   ],
