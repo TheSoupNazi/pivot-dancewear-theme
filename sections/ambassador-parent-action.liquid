@@ -52,7 +52,7 @@
   var token = new URLSearchParams(location.search).get('t') || '';
   var HDR = { 'ngrok-skip-browser-warning': '1' };
   var JHDR = { 'ngrok-skip-browser-warning': '1', 'Content-Type': 'application/json' };
-  var PATHS = { agreement: 'agreement', waitlist: 'confirm', pay: 'pay', withdraw: 'withdraw', photo: 'photo' };
+  var PATHS = { agreement: 'agreement', waitlist: 'confirm', pay: 'pay', withdraw: 'withdraw', photo: 'photo', update: 'update' };
   var url = api + '/api/parent/' + PATHS[mode] + '/' + encodeURIComponent(token);
 
   function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
@@ -143,6 +143,41 @@
     return;
   }
 
+  if (mode === 'update') {
+    getJSON(url, { headers: HDR }).then(function (d) {
+      var help = 'Questions? Email hello@pivotdancewear.com.';
+      if (d.status === 'invalid') return invalid();
+      if (d.status === 'applied') return view('🎀', 'Already updated', ['We’re already using your new answers for ' + d.dancer + '. You’re all set!'], true);
+      if (d.status === 'kept') return view('🎀', 'Nothing was changed', ['You chose to keep ' + d.dancer + '’s original application. It’s still in.']);
+      if (d.status === 'superseded') return view('🩰', 'There’s a newer link', ['You sent the form again after this, so this link no longer works. Please use the link in our most recent email.', help]);
+      if (d.status === 'expired' || d.status === 'closed') return view('🩰', 'This link has expired', [d.dancer + '’s original application is still in and nothing was changed.', help]);
+      if (d.status === 'decided') return view('🩰', 'This can’t be changed now', ['We’ve already sent our decision emails, so ' + d.dancer + '’s application can no longer be updated.', help]);
+      card.className = 'pa-card pa-center'; card.innerHTML = '';
+      card.appendChild(el('h1', '', 'Update ' + d.dancer + '’s application?'));
+      card.appendChild(el('p', '', 'You sent us ' + d.dancer + '’s application again on ' + d.sentOn + '. If you choose to use the new answers, these will change:'));
+      var ul = el('p'); ul.style.cssText = 'color:#2a1a1a;font-weight:600;';
+      ul.textContent = (d.changes || []).join(' · '); card.appendChild(ul);
+      card.appendChild(el('p', '', 'The original application is already paid, so there’s nothing more to pay either way.'));
+      var err = el('p', 'pa-err'); err.style.display = 'none';
+      var yes = el('button', 'pa-btn', 'Yes, use my new answers'); yes.type = 'button'; yes.style.cssText = 'background:#2a1a1a;color:#f0d8d8;margin-bottom:10px;';
+      var no = el('button', 'pa-btn', 'No, keep the original'); no.type = 'button';
+      card.appendChild(err); card.appendChild(yes); card.appendChild(no);
+      function send(decision, btn, label) {
+        yes.disabled = no.disabled = true; btn.textContent = 'One moment…'; err.style.display = 'none';
+        getJSON(url, { method: 'POST', headers: JHDR, body: JSON.stringify({ decision: decision }) }).then(function (r) {
+          if (r.status === 'applied') return view('🎀', 'All updated!', ['We’re now using your new answers for ' + r.dancer + '. Thank you!'], true);
+          if (r.status === 'kept') return view('🎀', 'Thanks — nothing was changed', [r.dancer + '’s original application is still in.']);
+          if (r.status === 'invalid') return invalid();
+          if (r.status && r.status !== 'error') return location.reload();
+          yes.disabled = no.disabled = false; btn.textContent = label; err.textContent = r.message || 'Something went wrong. Please try again.'; err.style.display = 'block';
+        }).catch(function () { yes.disabled = no.disabled = false; btn.textContent = label; err.textContent = 'We couldn’t reach our system. Please try again in a few minutes.'; err.style.display = 'block'; });
+      }
+      yes.addEventListener('click', function () { send('apply', yes, 'Yes, use my new answers'); });
+      no.addEventListener('click', function () { send('keep', no, 'No, keep the original'); });
+    }).catch(unavailable);
+    return;
+  }
+
   function done(dancer, already) {
     view('🎀', already ? 'Already signed' : 'Agreement signed!',
       [already ? 'The Ambassador Agreement for ' + dancer + ' has already been signed and is on file.'
@@ -184,7 +219,7 @@
   "name": "Ambassador parent action",
   "settings": [
     { "type": "select", "id": "mode", "label": "Page type", "default": "agreement",
-      "options": [ { "value": "agreement", "label": "Sign agreement" }, { "value": "waitlist", "label": "Confirm waitlist" }, { "value": "pay", "label": "Finish paying (reminder link)" }, { "value": "withdraw", "label": "Withdraw application" }, { "value": "photo", "label": "Upload a new photo" } ] },
+      "options": [ { "value": "agreement", "label": "Sign agreement" }, { "value": "waitlist", "label": "Confirm waitlist" }, { "value": "pay", "label": "Finish paying (reminder link)" }, { "value": "withdraw", "label": "Withdraw application" }, { "value": "photo", "label": "Upload a new photo" }, { "value": "update", "label": "Confirm updated answers" } ] },
     { "type": "text", "id": "api_base", "label": "Ambassador app address", "default": "https://dweeb-juvenile-isotope.ngrok-free.dev",
       "info": "Only change this if the app's address changes." }
   ],
