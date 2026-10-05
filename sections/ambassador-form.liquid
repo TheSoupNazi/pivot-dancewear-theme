@@ -353,6 +353,11 @@
       }
     });
 
+    const emailField = document.getElementById('ambf-guardian-email');
+    if (emailField && emailField.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(emailField.value.trim())) {
+      errors.push('Please enter a valid email address for the parent/guardian (like name@gmail.com).');
+    }
+
     const video = document.getElementById('ambf-video');
     if (video && video.value.trim()) {
       try { new URL(video.value.trim()); } catch (_) {
