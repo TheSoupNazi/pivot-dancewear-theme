@@ -754,6 +754,30 @@
       <script type="application/ld+json">
         {{ product | structured_data }}
       </script>
+
+      {%- comment -%}
+        Judge.me outputs rating schema only when its own JSON-LD metafield exists.
+        Fall back to the standard reviews metafields so every reviewed product gets stars.
+      {%- endcomment -%}
+      {%- assign review_count = product.metafields.reviews.rating_count.value | default: 0 -%}
+      {%- if product.metafields.judgeme.review_widget_json_ld == blank and review_count > 0 -%}
+        {%- assign rating = product.metafields.reviews.rating.value -%}
+        <script type="application/ld+json">
+          {
+            "@context": "https://schema.org/",
+            "@type": "Product",
+            "@id": {{ '/products/' | append: product.handle | append: '#product' | json }},
+            "name": {{ product.title | json }},
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": {{ rating.rating | json }},
+              "reviewCount": {{ review_count }},
+              "bestRating": {{ rating.scale_max | json }},
+              "worstRating": {{ rating.scale_min | json }}
+            }
+          }
+        </script>
+      {%- endif -%}
     </div>
   </product-component>
 </product-info>
