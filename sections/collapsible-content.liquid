@@ -106,6 +106,26 @@
   </div>
 </div>
 
+{%- if section.settings.faq_schema -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {%- for block in section.blocks -%}
+          {%- assign q = block.settings.heading | default: block.settings.page.title -%}
+          {%- assign a = block.settings.row_content | append: block.settings.page.content | strip_html | strip_newlines | strip -%}
+          {
+            "@type": "Question",
+            "name": {{ q | json }},
+            "acceptedAnswer": { "@type": "Answer", "text": {{ a | json }} }
+          }{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ]
+    }
+  </script>
+{%- endif -%}
+
 {% schema %}
 {
   "name": "t:sections.collapsible_content.name",
@@ -215,6 +235,13 @@
       "id": "open_first_collapsible_row",
       "default": false,
       "label": "t:sections.collapsible_content.settings.open_first_collapsible_row.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "faq_schema",
+      "default": false,
+      "label": "Add FAQ structured data (SEO)",
+      "info": "Outputs FAQPage schema from the rows. Use only for question-and-answer content."
     },
     {
       "type": "header",

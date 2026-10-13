@@ -448,9 +448,7 @@
     {% if settings.logo %}
       "logo": {{ settings.logo | image_url: width: 500 | prepend: "https:" | json }},
     {% endif %}
-    {% if shop.email != blank %}
-      "email": {{ shop.email | json }},
-    {% endif %}
+    "email": "support@pivotdancewear.com",
     "areaServed": ["US", "CA"],
     "audience": { "@type": "PeopleAudience", "suggestedGender": "female", "suggestedMinAge": 4, "suggestedMaxAge": 12 },
     "knowsAbout": ["kids dancewear", "girls dance tops", "girls dance shorts", "competition dancewear", "dance practice wear"],
