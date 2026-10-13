@@ -426,26 +426,35 @@
   customElements.define('sticky-header', StickyHeader);
 {% endjavascript %}
 
+{%- liquid
+  assign same_as = ''
+  assign social_links = settings.social_twitter_link | append: '|' | append: settings.social_facebook_link | append: '|' | append: settings.social_pinterest_link | append: '|' | append: settings.social_instagram_link | append: '|' | append: settings.social_tiktok_link | append: '|' | append: settings.social_tumblr_link | append: '|' | append: settings.social_snapchat_link | append: '|' | append: settings.social_youtube_link | append: '|' | append: settings.social_vimeo_link | split: '|'
+  for link in social_links
+    assign link_clean = link | split: '?' | first | strip
+    if link_clean != blank
+      assign same_as = same_as | append: link_clean | append: '|'
+    endif
+  endfor
+  assign same_as = same_as | split: '|'
+-%}
 <script type="application/ld+json">
   {
-    "@context": "http://schema.org",
-    "@type": "Organization",
+    "@context": "https://schema.org",
+    "@type": "OnlineStore",
+    "@id": {{ request.origin | append: '/#organization' | json }},
     "name": {{ shop.name | json }},
+    "url": {{ request.origin | append: '/' | json }},
+    "description": "Pivot Dancewear makes premium dance tops and high-waisted dance shorts for girls sizes 4–12 (S 4–5, M 6–7, L 8–10, XL 12), at about half the price of big-brand dancewear. Designed for dance class, practice, competitions, and conventions.",
     {% if settings.logo %}
       "logo": {{ settings.logo | image_url: width: 500 | prepend: "https:" | json }},
     {% endif %}
-    "sameAs": [
-      {{ settings.social_twitter_link | json }},
-      {{ settings.social_facebook_link | json }},
-      {{ settings.social_pinterest_link | json }},
-      {{ settings.social_instagram_link | json }},
-      {{ settings.social_tiktok_link | json }},
-      {{ settings.social_tumblr_link | json }},
-      {{ settings.social_snapchat_link | json }},
-      {{ settings.social_youtube_link | json }},
-      {{ settings.social_vimeo_link | json }}
-    ],
-    "url": {{ request.origin | append: page.url | json }}
+    {% if shop.email != blank %}
+      "email": {{ shop.email | json }},
+    {% endif %}
+    "areaServed": ["US", "CA"],
+    "audience": { "@type": "PeopleAudience", "suggestedGender": "female", "suggestedMinAge": 4, "suggestedMaxAge": 12 },
+    "knowsAbout": ["kids dancewear", "girls dance tops", "girls dance shorts", "competition dancewear", "dance practice wear"],
+    "sameAs": {{ same_as | json }}
   }
 </script>
 

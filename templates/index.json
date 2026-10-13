@@ -12,21 +12,21 @@
     "slideshow_hero": {
       "type": "slideshow-hero",
       "blocks": {
-        "slide_summer": {
+        "slide_fall": {
           "type": "slide",
           "settings": {
-            "image_asset": "hero-summer-rwb.jpg",
-            "image_alt": "Pivot Dancewear new red, white and blue summer sets",
+            "image_asset": "hero-fall-group.jpg",
+            "image_alt": "Nine girls ages 4 to 12 wearing Pivot Dancewear dance tops and high-waisted dance shorts in blue, red and green",
             "image_focal": "top",
             "slide_text_color": "light",
             "text_alignment": "center",
-            "heading": "Bring on Summer!",
+            "heading": "New Season. New Sets.",
             "heading_size": "h1",
             "heading_position": "top",
-            "text_line_1": "Check out our new Red, White and Blue sets!",
-            "text_line_2": "(Bonus!!! See if you can find our other new fun summer colored set!)",
-            "button_label": "Shop New Colors",
-            "button_link": "shopify://products/criss-cross-top"
+            "text_line_1": "Premium dancewear, half the price.",
+            "text_line_2": "Sizes 4–12",
+            "button_label": "Shop Now",
+            "button_link": "shopify://collections/all"
           }
         },
         "slide_pink": {
@@ -48,7 +48,7 @@
         }
       },
       "block_order": [
-        "slide_summer",
+        "slide_fall",
         "slide_pink"
       ],
       "settings": {
