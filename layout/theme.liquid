@@ -33,6 +33,11 @@
     {% endif %}
 
     {% render 'meta-tags' %}
+    {% render 'breadcrumb-schema' %}
+
+    {%- if request.page_type == 'blog' and blog.articles_count == 0 -%}
+      <meta name="robots" content="noindex">
+    {%- endif -%}
 
     <script type="module">
       import * as StandardEvents from 'https://cdn.shopify.com/storefront/standard-events.js';
