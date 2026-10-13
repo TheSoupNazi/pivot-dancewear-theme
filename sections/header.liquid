@@ -450,6 +450,15 @@
     {% endif %}
     "email": "support@pivotdancewear.com",
     "areaServed": ["US", "CA"],
+    "hasMerchantReturnPolicy": {
+      "@type": "MerchantReturnPolicy",
+      "applicableCountry": ["US", "CA"],
+      "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+      "merchantReturnDays": 14,
+      "returnMethod": "https://schema.org/ReturnByMail",
+      "itemCondition": "https://schema.org/NewCondition",
+      "merchantReturnLink": {{ request.origin | append: '/policies/refund-policy' | json }}
+    },
     "audience": { "@type": "PeopleAudience", "suggestedGender": "female", "suggestedMinAge": 4, "suggestedMaxAge": 12 },
     "knowsAbout": ["kids dancewear", "girls dance tops", "girls dance shorts", "competition dancewear", "dance practice wear"],
     "sameAs": {{ same_as | json }}
