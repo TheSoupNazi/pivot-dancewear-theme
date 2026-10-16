@@ -34,6 +34,10 @@
   #amb-pa .pa-btn { width:100%; padding:16px; border:0; border-radius:6px; background:#f0d8d8; color:#2a1a1a; font-family:'Montserrat',sans-serif; font-size:12px; font-weight:700; letter-spacing:.2em; text-transform:uppercase; cursor:pointer; }
   #amb-pa .pa-btn:disabled { opacity:.6; cursor:default; }
   #amb-pa .pa-err { color:#c62828; font-size:13px; margin:0 0 14px; }
+  #amb-pa .pa-h2 { font-family:'Cormorant Garamond',serif; font-weight:400; font-size:22px; color:#2a1a1a; margin:8px 0 4px; }
+  #amb-pa .pa-addr { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:12px 0 24px; }
+  #amb-pa .pa-addr .pa-full { grid-column:1 / -1; }
+  @media (max-width:560px){ #amb-pa .pa-addr { grid-template-columns:1fr; } }
   #amb-pa .pa-spin { text-align:center; color:#9e7575; padding:24px 0; font-size:14px; }
 </style>
 
@@ -193,6 +197,18 @@
     var chk = el('div', 'pa-check'); var cb = el('input'); cb.type = 'checkbox'; cb.id = 'pa-agree';
     var cl = el('label', '', 'I have read the full Pivot Dancewear Ambassador Agreement above and agree to its terms on behalf of myself and ' + d.dancer + '.'); cl.setAttribute('for', 'pa-agree');
     chk.appendChild(cb); chk.appendChild(cl); card.appendChild(chk);
+    var A = d.address || {};
+    card.appendChild(el('p', 'pa-h2', 'Where should we ship ' + d.dancer + '\u2019s Pivot sets?'));
+    card.appendChild(el('p', 'pa-sub', 'We\u2019ll use this address for every quarterly set. Reply to any of our emails if it changes.'));
+    var addr = el('div', 'pa-addr'), F = {};
+    [['name', 'Ship to (full name) *', 'name', true], ['line1', 'Street address *', 'address-line1', true], ['line2', 'Apt, suite, unit (optional)', 'address-line2', true],
+     ['city', 'City *', 'address-level2'], ['state', 'State / Province *', 'address-level1'], ['zip', 'ZIP / Postal code *', 'postal-code'], ['country', 'Country *', 'country-name']
+    ].forEach(function (f) {
+      var w = el('div', 'pa-f' + (f[3] ? ' pa-full' : '')); var lb = el('label', '', f[1]); lb.setAttribute('for', 'pa-a-' + f[0]);
+      var inp = el('input'); inp.type = 'text'; inp.id = 'pa-a-' + f[0]; inp.autocomplete = f[2]; inp.value = A[f[0]] || (f[0] === 'country' ? 'United States' : '');
+      w.appendChild(lb); w.appendChild(inp); addr.appendChild(w); F[f[0]] = inp;
+    });
+    card.appendChild(addr);
     var grid = el('div', 'pa-grid');
     var f1 = el('div', 'pa-f'); var l1 = el('label', '', 'Parent/Guardian Signature *'); l1.setAttribute('for', 'pa-sig');
     var sig = el('input'); sig.type = 'text'; sig.id = 'pa-sig'; sig.placeholder = 'Type your full legal name'; sig.autocomplete = 'name'; f1.appendChild(l1); f1.appendChild(sig);
@@ -202,9 +218,11 @@
     var btn = el('button', 'pa-btn', 'Sign Agreement →'); btn.type = 'button'; card.appendChild(btn);
     btn.addEventListener('click', function () {
       err.style.display = 'none';
+      var address = {}; Object.keys(F).forEach(function (k) { address[k] = F[k].value.trim(); });
+      if (!address.name || !address.line1 || !address.city || !address.state || !address.zip || !address.country) { err.textContent = 'Please fill in the full mailing address so we can ship ' + d.dancer + '\u2019s sets.'; err.style.display = 'block'; return; }
       if (!cb.checked || !sig.value.trim()) { err.textContent = 'Please check the box and type your full name.'; err.style.display = 'block'; return; }
       btn.disabled = true; btn.textContent = 'Signing…';
-      getJSON(url, { method: 'POST', headers: JHDR, body: JSON.stringify({ signature: sig.value.trim(), agree: true }) }).then(function (r) {
+      getJSON(url, { method: 'POST', headers: JHDR, body: JSON.stringify({ signature: sig.value.trim(), agree: true, address: address }) }).then(function (r) {
         if (r.status === 'signed') return done(r.dancer, !r.justSigned);
         if (r.status === 'invalid') return invalid();
         err.textContent = r.message || 'Something went wrong. Please try again.'; err.style.display = 'block'; btn.disabled = false; btn.textContent = 'Sign Agreement →';
